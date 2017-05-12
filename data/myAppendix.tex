@@ -138,3 +138,13 @@ T_1=1+\lambda_1-\lambda_1^2 \bm{u}^T K_2^{-1}\bm{u}=1+(\lambda_1^{-1}+\bm{u}^T\b
 \]
 即角度$\theta_1$越小$T_1$越大，同理$\theta_i$越小$T_i$越大，而由连分式的表达式可以看出$T_1$关于$T_2$递增，连分式本身具有自相似性，
 因此诸$\theta_i$减小可以增大信息量$T_1$。
+\subsection{引理~\ref{lemma:hexagon}的推导}\label{B_F_4}
+  设式(\ref{eq:equiv})左边为B,$A=\lambda+\frac{3}{2}$,那么由Woodbury矩阵求逆公式有
+  \[
+  (A+\frac{1}{\lambda+3/2-\frac{3/2}{\lambda+3/2}})^{-1}=A^{-1}-A^{-1}BA^{-1}
+  \]
+  整理得:
+  \[
+  B=A-\frac{A^2}{A+\frac{1}{\lambda+3/2-\frac{3/2}{\lambda+3/2}}}
+  \]
+  通分化简得证。

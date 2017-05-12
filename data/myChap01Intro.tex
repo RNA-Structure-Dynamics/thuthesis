@@ -17,12 +17,15 @@
 
 %algorithm property analysis
 协作定位技术已经有了一定的研究基础，目前已经有大量的文献针对定位算法展开探讨，对定位算法的性能研究一般可以通过理论推导和仿真比较等方法，在理论
-推导方面，已经得出了在给定的定位场景（定位网络）下存在一个统计平均意义上的定位误差下界\cite{LimitBound}，任何基于测量数据对目标节点的位置估计的误差都在这个定位误差下界之上。因此研究和分析这个定位误差下界随着定位网络规模的扩大和时间上的延长对于定位算法的设计具有一定的指导意义。
+推导方面，已经得出了在给定的定位场景（定位网络）下存在一个统计平均意义上的定位误差下界\cite{LimitBound}，任何基于测量数据对目标节点的位置估计的误差都在这个定位误差下界之上。因此研究和分析这个定位误差下界随着定位网络规模的扩大和采样时间间隔的缩短对于定位算法的设计具有一定的指导意义。
 
 \section{研究问题}
 %content
-在本人的研究中，我会首先建立定位网络的数学模型并根据建立的模型推导定位误差下界，然后分别针对若干特殊的定位网络推导误差下界的解析表达式，并根据解析表达式分析定位性能随网络的时空规模的变化规律。
+在本人的研究中，我会首先建立定位网络的数学模型并根据建立的模型推导定位误差下界的一般表达式，然后分别针对若干特殊的定位网络推导误差下界的解析表达式，并根据解析表达式分析定位性能随网络的时空规模的变化规律。
 
 %focus
 \section{文章结构}
-本文的研究重点是特殊定位网络误差下界的推导，该推导首先要处理对称正定的矩阵，因此本文会应用已有的结果如求一个矩阵的逆阵的某个子式的公式，关于矩阵逆的恒等式等结论来对要研究的矩阵进行预处理；其次由于很多时候直接推导存在很大的困难，需要先归纳后证明，本文充分利用了数学归纳法完成这一任务；最后推导得出的表达式往往比较复杂，表达式的化简需要特殊的数学方法，本文根据问题的特征分别采用了瑞利商、黎曼积分以及连分式等思路。
+本文的研究重点是特殊定位网络误差下界的推导，在(\ref{section:model})一节中给出了问题的数学模型，主要分非协作定位场景(\ref{subsection:noncooperative_localization})、空间协作定位场景(\ref{subsection:cooperative_localization})、时间协作定位场景(\ref{subsection:temporal_cooperative_localization})三部分，(\ref{subsection:model_discussion})小节中对模型的合理性进行了进一步讨论。
+在(\ref{section:research_content})一节中分别对上一节提出的数学模型进行求解，其中非协作情形(\ref{subsection:circle_general})针对小节(\ref{subsection:noncooperative_localization})的模型，空间两个节点协作(\ref{subsection:two_node_cooperation})、N个节点两两协作(\ref{subsection:complete_graph_cooperation})、大规模正方形和正六边形网络协作(\ref{subsection:square_and_hexagon_network})
+针对(\ref{subsection:cooperative_localization})的模型，一个节点时间上的协作(\ref{subsection:linear_network})针对(\ref{subsection:temporal_cooperative_localization})的模型。
+最后(\ref{section:conclusion})一节对全文使用的数学方法和取得的成果进行了总结，
