@@ -86,7 +86,7 @@ I(\bm{p}_1)+&-\bm{C}_{1,2}&...&-\bm{C}_{1,N_a}\\
 $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i和j的方向向量。
 \subsection[时间协作定位]{时间协作定位}\label{subsection:temporal_cooperative_localization}
 
-{单个待测节点时间协作定位}
+\textbf{单个待测节点时间协作定位}
 考虑一个平面定位场景中有一个待定位的移动节点，场景中部署的$N_b$个位置已知的锚点分别在在$t_1,\dots,t_{N_a}$时刻对该节点进行定位，移动节点可以通过自身的加速度传感器对自己的速度有测量，如图(\ref{fig:cooperative_single_temporal})所示。
         \begin{figure}
           \centering
@@ -96,7 +96,7 @@ $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i
 
 假设测量时间间隔比较小使得相邻测量间节点速度方向可近似看作不变，速度测量值服从均值为$v$，方差为$\sigma_{v}$的正态分布$V_{ij}$。
 那么以节点各时刻的的位置$\{p_i\}$作为待估计的参数，可以得到包括相邻时刻间的所有测距量的联合概率密度函数为
-\begin{equation}\label{eq:single}
+\begin{equation}
 \prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
 \prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_v(t_{i+1}-t_i)}
 exp(-\frac{(v_{i,i+1}(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_v^2(t_{i+1}-t_i)^2})
@@ -119,6 +119,28 @@ I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
 }
 \end{equation}
 上面的式子中若将2乘2的矩阵看作单位元素，则是一个三对角的矩阵。$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,i+1}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^T/(\sigma_v^2(t_{i+1}-t_i)^2)$,表示未知节点i和j协作的矩阵，$\bm{u}_{ij}$表示未知节点i和j的方向向量。
+
+我们可以将第二个模型问题与线性网络单节点时间协作建立联系，只需对上面概率密度函数中出现的符号重排即可：
+将两移动节点在$t_1$时刻的协作的边作为链路的中心，该链路记为$l$,左右各有$N_a$个节点，分别表示各节点$t_i$时刻的位置。
+以其中一个移动节点为参照，研究其$t_{N_a}$时刻的位置在有无$l$的影响，无$l$时，协作链路长度只有$N_a-1$,有$l$时，协作链路长度是$2N_a-1$,增加了$N_a$条链路的协作信息。于是得到的费舍尔信息矩阵与式(\ref{eq:time_cooperation_matrix})形式相同，维数为$4N_a$。
+
+\textbf{两个节点时间协作定位}
+考虑一个平面定位场景中有两个待定位的移动节点$p,q$，在初始时刻$t_1$两个移动节点之间有一次测距，服从无偏的标准差为$\sigma$的正态分布，之后时刻$t_2,\dots,t_{N_a}$两个节点不再协作，在各个时刻场景中部署的$N_b$个位置已知的锚点都可以对两个节点进行定位，移动节点可以通过自身的加速度传感器对自己的速度有测量，
+假设时间间隔比较小使得相邻测量间节点速度方向可近似看作不变，速度测量值分别服从方差为$\sigma_i$的正态分布$V_i$和标准差为$\sigma'_j$的正态分布$V'_i$（均值未知，但测量是无偏的），同时假设每个节点从$t_i$到$t_{i+1}$时刻的角度符从$[0,2\pi]$的正态分布，但角度没有测量量，是未知参数。我们试图研究初始时刻$t_1$两个移动节点之间的一次测距对后续$t_n$时刻每个节点的定位精度平均来说还有多大的贡献？
+
+针对两个节点各时刻的的位置$\{p_i,q_i\}$共计$2N_a$个二维向量作为待估计的参数，可以得到包括相邻时刻间的所有测距量的联合概率密度函数为
+\begin{equation}
+\scriptsize{
+\begin{split}
+&\frac{1}{\sqrt{2\pi\sigma^2}}exp(-\frac{(x-||\bm{p}_1-\bm{q}_1)^2}{2\sigma^2})\prod_{i=1}^{N_a}
+f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
+\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{q_i})
+\prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_i(t_{i+1}-t_i)}\\
+&exp(-\frac{v_i(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_i^2(t_{i+1}-t_i)^2}
+\prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma'_i(t_{i+1}-t_i)}
+exp(-\frac{v'_i(t_{i+1}-t_i)-||\bm{q}_i-\bm{q}_{i+1}||)^2}{2\sigma^{'2}_i(t_{i+1}-t_i)^2}
+\end{split}}
+\end{equation}
 \subsection{关于模型的讨论}\label{subsection:model_discussion}
 上面三小节给出了三种典型的定位场景,我们还需要如下限制条件模型才比较合理：
 \begin{itemize}
@@ -593,14 +615,41 @@ K对应的迭代矩阵循环周期为2，
 角度可认为不变，那么有理由假设之前求的$\sqrt{\lambda^2+4\lambda}$是对一般的曲线轨迹在$\Delta t\to 0$时成立。
 %圆弧仿真
 虽然$\sqrt{\lambda^2+4\lambda}$是一个最大的信息量，但下面的定理指出，较远的时间间隔的位置的贡献实际上是幂指数衰减的，证明见附录[\ref{B_F_2}]：
-\begin{theorem}
-若相邻时间间隔最大的角度变化量小于$\Delta \theta$，且原来前后各有$N_a$层协作链路，那么增加一层时间协作后的等效费舍尔信息矩阵较大的特征值的增量不超过
-$\frac{1}{(\lambda^2+2\lambda)(1+\lambda)^{2(N_a-1)}}$
-但也不小于$\frac{(\cos\Delta\theta)^{2N_a}}{(1+1/\lambda)^2(\lambda^2+2\lambda)(2+\lambda)^{2(N_a-1)}}$
+\begin{theorem}\label{theorem:exponential_decreasing}
+若相邻时间间隔最大的角度变化量小于$\Delta \theta$，则由式(\ref{eq:recursive_efim})确定的数列$T_1(N_a)$(简记为$T_{N_a}$)的增量$\Delta_{+} T_{N_a}:=T_{N_a+1}-T_{N_a},\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时满足:
+\[
+\frac{(\cos\Delta\theta)^{2(N_a-1)}}{(1+1/\lambda)^2(\lambda^2+2\lambda)(2+\lambda)^{2(N_a-2)}}\leq \Delta_{+} T_{N_a}\leq\frac{1}{(\lambda^2+2\lambda)(1+\lambda)^{2(N_a-2)}}
+\]
 \end{theorem}
 \begin{remark}
 由于费舍尔信息随链路是幂指数衰减，再对某一时刻的目标节点进行定位时，只需考虑前后几个时刻的位置即可，较远的时刻基本没有信息量，利用上只会增加计算上的开销而对定位性能不会有多大的提升。
+
+为说明此结论，我们对式\ref{eq:recursive_efim}取不同的$\lambda$进行简单的数值计算，其中$\theta_i$按照~\ref{subsection:temporal_cooperative_localization}小节中$[0,2\pi]$均匀分布的假设求不同的$N_a$时$T_i$的性能平均，结果图~\ref{fig:continuous_fraction_exponential}所示:
+\begin{figure}
+  \centering
+  \includegraphics[width=250pt]{decreaing_exponential.png}
+  \caption{连分式指数收敛性图示}\label{fig:continuous_fraction_exponential}
+\end{figure}
+根据图~\ref{fig:continuous_fraction_exponential}可以看出:
+\begin{itemize}
+\item 通过蒙特卡罗仿真进一步验证了定理~\ref{theorem:exponential_decreasing}的正确性。
+\item $\lambda=\frac{a}{b}$，表示锚点定位强度与目标节点协作强度之比，当$\lambda$较大即锚点定位更强时，图中协作信息量下降得更快，表明更远的协作链路所能提供的信息更少。
+\item 实际随机模拟中的信息衰减速度要快于定理~\ref{theorem:exponential_decreasing}给出的上界，这主要是因为随机模拟中出现角度正交的情况时会阻断信息量从较远链路的传播。为了讨论信息衰减下界，我们下面假设链路的夹角$\theta_i$服从零均值的正态分布，对于给定的$\Delta \theta$标准差$\sigma$满足$3\sigma=\Delta \theta$,由$3-\sigma$原则可近似认为角度变化不会超过$\Delta$.
+\end{itemize}
 \end{remark}
+\begin{remark}
+在\ref{subsection:temporal_cooperative_localization}小节中，推导得出两个节点时间一次协作的模型问题可以转化为单节点的模形，但存在一个区别在于这里各时刻速度方向$\theta_i$是随机变量，因此求得的SPEB$\frac{1}{\lambda}+\frac{1}{T_1}$是关于$\theta_i$的随机变量，要对其求数学期望才能得到平均性能。
+
+沿用式\ref{eq:recursive_efim}的假设，对诸$\theta_i$求平均后即得平均性能，由于是连分式的形式无法显式给出平均后的结果，但在后续仿真中我们将分别采用蒙特卡罗模拟的方法估计这个平均性能。
+
+另外由于定理~\ref{theorem:exponential_decreasing}中的信息衰减上下界不含$\theta$,因此也是平均性能提升的衰减速率。如果针对两个节点时间协作的模型问题，则应
+估计$\sum_{i=N_a}^{2N_a}\frac{1}{q^{2i}}$,结果还是$q^{2N_a}$量级，即$N_a$层后面的所有链路的增益与第$N_a$层的增益相当，即我们有如下推论，详见附录[\ref{B_F_5}]:
+\end{remark}
+\begin{corollary}[定理\ref{theorem:exponential_decreasing}的推论]\label{corollary:exponential_decreasing}
+在定理\ref{theorem:exponential_decreasing}的的条件下，数列$\{T_{N_a}\}$收敛于$T_{\infty}$,收敛速度是超线性收敛的，即\[
+\exists q>1,s.t. \lim_{N_a\to\infty}\frac{T_{N_a}-T_{\infty}}{(T_{N_a+1}-T_{\infty})^q}>0
+\]
+\end{corollary}
 上面的推导过程具有一般性，下面我们不对未知节点测距方差作出相等的假设，则对$a\bm{I}+b\bm{J}$提取a，并设$\lambda_{ij}=\frac{b}{a\sigma_{ij}^2}$于是我们只需考虑$\bm{I}+\bm{J}$,其中
 \[\scriptsize{
 J=\left(
@@ -637,7 +686,7 @@ J=\left(
 根据前面的正交性的结论，非坐标轴上的点不会对目标节点提供定位信息，而两条坐标轴提供的信息又彼此独立，因此其定位信息量是2个完全相同的部分相加，
 每部分由式(\ref{eq:gcf_1})描述，在网络规模很大时近似于极限值$\sqrt{\lambda^2+4\lambda}$。
 
-该结论可以推广至一般矩形网络，且各节点相互测距的方差$\sigma^2_{i,j}$不相等，由式(\label{eq:recursive_efim_second})可以看出正交性的结论仍然成立，因此非坐标轴上的点不会对目标节点提供定位信息，在实际定位系统的设计中，非坐标轴上的点的信息无需传到目标节点或中央处理器进行解算。
+该结论可以推广至一般矩形网络，且各节点相互测距的方差$\sigma^2_{i,j}$不相等，由式(\ref{eq:recursive_efim_second})可以看出正交性的结论仍然成立，因此非坐标轴上的点不会对目标节点提供定位信息，在实际定位系统的设计中，非坐标轴上的点的信息无需传到目标节点或中央处理器进行解算。
 
 下面我们给出大规模正六边形网络目标节点定位误差界的解析表达式，首先需要下面的引理，推导过程见附录[\ref{B_F_4}]
 \begin{lemma}\label{lemma:hexagon}
@@ -662,7 +711,7 @@ J=\left(
 \section{结论}\label{section:conclusion}
   % Keep the summary *very short*.
   \begin{itemize}
-  \item 
+  \item
   数学方法方面
   \begin{itemize}
   \item 本文的推导首先要处理对称正定的矩阵，因此本文会应用已有的结果如求一个矩阵的逆阵的某个子式的公式、关于矩阵逆的恒等式等结论来对要研究的矩阵进行预处理

@@ -94,24 +94,24 @@ V^{-1}\bm{u}=\begin{pmatrix}
 所以对$N_a$维矩阵，协作方向有$N_a-1$,而得到的有限连分式数列也恰有$N_a-1$项。
 \subsection{单节点动态定位问题等效费舍尔信息衰减上下界}\label{B_F_2}
 考虑在原有基础上增加一层节点，即利用上距离时间中点前后更远的两个时刻的位置，由对称性我们只需考虑单边，
-于是协作层数由原来的$N_a-1$变为$N_a$,等效费舍尔信息矩阵较大的特征值分别记为$T_1,T'_1$,为便于比较，我们在$T_1$中引入虚拟节点将其层数也拓展为$N_a$,它只有锚点的定位信息，这样它们的区别是连分式的末端$T_{N_a+1}=\lambda$,$T'_{N_a+1}=\lambda+\frac{1}{1+1/\lambda}$
+于是协作层数由原来的$N_a-1$变为$N_a$,等效费舍尔信息矩阵较大的特征值分别记为$T_1,T'_1$,为便于比较，我们在$T_1$中引入虚拟节点将其层数也拓展为$N_a$,它只有锚点的定位信息，这样它们的区别是连分式的末端$T_{N_a}=\lambda$,$T'_{N_a}=\lambda+\frac{1}{1+1/\lambda}$
 对$|T_1-T'_1|$从外向里通分得:
 \[
-|T_1-T'_1|=\frac{\cos^2\theta_1|\frac{1}{T_2}-\frac{1}{T'_2}|}{(1+\frac{\sin\theta_1}{\lambda}+\frac{\cos\theta_1}{T_2})
-(1+\frac{\sin\theta_1}{\lambda}+\frac{\cos\theta_1}{T'_2})}\leq |\frac{1}{T_2}-\frac{1}{T'_2}|
+|T_1-T'_1|=\frac{\cos^2\theta_1|\frac{1}{T_2}-\frac{1}{T'_2}|}{(1+\frac{\sin^2\theta_1}{\lambda}+\frac{\cos^2\theta_1}{T_2})
+(1+\frac{\sin^2\theta_1}{\lambda}+\frac{\cos^2\theta_1}{T'_2})}\leq |\frac{1}{T_2}-\frac{1}{T'_2}|
 \]
 继续放缩$|\frac{1}{T_2}-\frac{1}{T'_2}|$有：
 \[
-|\frac{1}{T_2}-\frac{1}{T'_2}|= \frac{\cos^2\theta_2|\frac{1}{T_3}-\frac{1}{T'_3}|}{(1+\lambda(1+\frac{\sin\theta_2}{\lambda}+\frac{\cos\theta_2}{T_3}))
-(1+\lambda(1+\frac{\sin\theta_2}{\lambda}+\frac{\cos\theta_2}{T'_3}))}\leq |\frac{1}{T_3}-\frac{1}{T'_3}|\frac{1}{(1+\lambda)^2}
+|\frac{1}{T_2}-\frac{1}{T'_2}|= \frac{\cos^2\theta_2|\frac{1}{T_3}-\frac{1}{T'_3}|}{(1+\lambda(1+\frac{\sin^2\theta_2}{\lambda}+\frac{\cos^2\theta_2}{T_3}))
+(1+\lambda(1+\frac{\sin^2\theta_2}{\lambda}+\frac{\cos^2\theta_2}{T'_3}))}\leq |\frac{1}{T_3}-\frac{1}{T'_3}|\frac{1}{(1+\lambda)^2}
 \]
 逐次递推得
 \[
-|T_1-T'_1|\leq \frac{1}{(1+\lambda)^{2(N_a-1)}} |\frac{1}{T_{N_a+1}}-\frac{1}{T'_{N_a+1}}|
+|T_1-T'_1|\leq \frac{1}{(1+\lambda)^{2(N_a-2)}} |\frac{1}{T_{N_a}}-\frac{1}{T'_{N_a}}|
 \]
 而:
 \[
-|\frac{1}{T_{N_a+1}}-\frac{1}{T'_{N_a+1}}|=\frac{1}{\lambda^2+2\lambda}
+|\frac{1}{T_{N_a}}-\frac{1}{T'_{N_a}}|=\frac{1}{\lambda^2+2\lambda}
 \]
 另一方面，因为$T_2,T'_2\geq \lambda$
 \[
@@ -121,6 +121,17 @@ V^{-1}\bm{u}=\begin{pmatrix}
 |\frac{1}{T_2}-\frac{1}{T'_2}|\geq \frac{\cos^2\Delta\theta|\frac{1}{T_3}-\frac{1}{T'_3}|}{(2+\lambda)^2}
 \]
 逐次递推得下界。
+\subsection{推论\ref{corollary:exponential_decreasing}的证明}\label{B_F_5}
+由定理\ref{theorem:exponential_decreasing}的结论:
+\[
+T_{N_a}=\sum_{k=1}^{N_a-1}\Delta_{+}T_k
+\]
+因此当$N_a\geq 2$时
+\[
+|T_{N_a}-T_{\infty}|=\sum_{k=N_a}^{\infty}\Delta_{+}T_k\leq \frac{1}{\lambda^2+2\lambda}\sum_{k=N_a}^{\infty}\frac{1}{(\lambda+1)^{2(k-2)}}=\frac{1}{(\lambda^2+2\lambda)^2}\frac{1}{(\lambda+1)^{2(N_a-3)}}
+\]
+另一方面:
+$|T_{N_a+1}-T_{\infty}|$
 \subsection{单节点非均一测距误差等效费舍尔信息矩阵推导}\label{B_F_3}
 类似式(\ref{eq:initial_efim})有:
 \[
