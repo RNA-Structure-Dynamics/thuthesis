@@ -17,7 +17,7 @@
 
 $N_b$个\textbf{独立}测量量的联合概率分布为:
 \begin{equation}\label{eq:single}
-f(x_1,...x_{N_b}|\textbf{p})=\prod_{i=1}^{N_b}\frac{1}{\sqrt{2\pi\sigma_i^2}}exp\left(-\frac{(x_i-||\bm{p}^b_i-\bm{p}||)^2}{2\sigma_i^2}\right)
+f(x_1,...x_{N_b}|\textbf{p})=\prod_{i=1}^{N_b}\frac{1}{\sqrt{2\pi\sigma_i^2}}exp(-\frac{(x_i-||\bm{p}^b_i-\bm{p}||)^2}{2\sigma_i^2})
 \end{equation}
 
 根据点估计的理论，对于一个无偏估计量，它的方差的下界是\textbf{费舍尔信息量}(Fisher Information)的倒数，称之为\textbf{克拉美罗界}(Crame Rao Bound)，在本文的讨论中，也称之为定位误差下界(Spatial Position Error Bound)，它的计算公式为:
@@ -33,7 +33,7 @@ f(x_1,...x_{N_b}|\textbf{p})=\prod_{i=1}^{N_b}\frac{1}{\sqrt{2\pi\sigma_i^2}}exp
 
 对于我们的模型问题，费舍尔信息矩阵有如下的形式：
 \begin{equation}\label{eq:uu}
-I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^\intercal
+I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^T
 \end{equation}
 其中
 \begin{equation}
@@ -55,7 +55,7 @@ I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^\int
 以$N_a$个未知节点的位置$\{p_i\}$作为待估计的参数，可以得到测距量的联合概率密度函数为
 
 \begin{equation}
-\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})\prod_{(i,j)\in \mathcal{E}}\frac{1}{\sqrt{2\pi\sigma_{ij}^2}}exp\left(-\frac{(x_{ij}-||\bm{p}_i-\bm{p}_j||)^2}{2\sigma_{ij}^2}\right)
+\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})\prod_{(i,j)\in \mathcal{E}}\frac{1}{\sqrt{2\pi\sigma_{ij}^2}}exp(-\frac{(x_{ij}-||\bm{p}_i-\bm{p}_j||)^2}{2\sigma_{ij}^2})
 \end{equation}
 上式中f的具体表达式为式(\ref{eq:single}),$\mathcal{E}$表示可以彼此测距的未知节点的二元组的集合，而$x_t^i$表示第t个锚点和第i个未知节点的距离测量量。
 
@@ -82,7 +82,7 @@ I(\bm{p}_1)+&-\bm{C}_{1,2}&...&-\bm{C}_{1,N_a}\\
 \right)
 }
 \end{equation}
-上面的式子中$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,j}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^\intercal /\sigma^2_{ij}$,表示未知节点i和j协作的矩阵。
+上面的式子中$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,j}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^T/\sigma^2_{ij}$,表示未知节点i和j协作的矩阵。
 $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i和j的方向向量。
 \subsection[时间协作定位]{时间协作定位}\label{subsection:temporal_cooperative_localization}
 
@@ -99,7 +99,7 @@ $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i
 \begin{equation}
 \prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
 \prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_v(t_{i+1}-t_i)}
-exp\left(-\frac{(v_{i,i+1}(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_v^2(t_{i+1}-t_i)^2}\right)
+exp(-\frac{(v_{i,i+1}(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_v^2(t_{i+1}-t_i)^2})
 \end{equation}
 {费舍尔信息矩阵}
 关于$2N_a$个参数$\{p_i\}$的费舍尔信息矩阵有如下的表达形式：
@@ -118,7 +118,7 @@ I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
 \right)
 }
 \end{equation}
-上面的式子中若将2乘2的矩阵看作单位元素，则是一个三对角的矩阵。$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,i+1}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^\intercal /(\sigma_v^2(t_{i+1}-t_i)^2)$,表示未知节点i和j协作的矩阵，$\bm{u}_{ij}$表示未知节点i和j的方向向量。
+上面的式子中若将2乘2的矩阵看作单位元素，则是一个三对角的矩阵。$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,i+1}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^T/(\sigma_v^2(t_{i+1}-t_i)^2)$,表示未知节点i和j协作的矩阵，$\bm{u}_{ij}$表示未知节点i和j的方向向量。
 
 我们可以将第二个模型问题与线性网络单节点时间协作建立联系，只需对上面概率密度函数中出现的符号重排即可：
 将两移动节点在$t_1$时刻的协作的边作为链路的中心，该链路记为$l$,左右各有$N_a$个节点，分别表示各节点$t_i$时刻的位置。
@@ -132,13 +132,13 @@ I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
 \begin{equation}
 \scriptsize{
 \begin{split}
-&\frac{1}{\sqrt{2\pi\sigma^2}}exp\left(-\frac{(x-||\bm{p}_1-\bm{q}_1)^2}{2\sigma^2}\right)\prod_{i=1}^{N_a}
+&\frac{1}{\sqrt{2\pi\sigma^2}}exp(-\frac{(x-||\bm{p}_1-\bm{q}_1)^2}{2\sigma^2})\prod_{i=1}^{N_a}
 f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
 \prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{q_i})
 \prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_i(t_{i+1}-t_i)}\\
-&exp\left(-\frac{(v_i(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_i^2(t_{i+1}-t_i)^2}\right)
+&exp(-\frac{v_i(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_i^2(t_{i+1}-t_i)^2}
 \prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma'_i(t_{i+1}-t_i)}
-exp\left(-\frac{(v'_i(t_{i+1}-t_i)-||\bm{q}_i-\bm{q}_{i+1}||)^2}{2\sigma^{'2}_i(t_{i+1}-t_i)^2}\right)
+exp(-\frac{v'_i(t_{i+1}-t_i)-||\bm{q}_i-\bm{q}_{i+1}||)^2}{2\sigma^{'2}_i(t_{i+1}-t_i)^2}
 \end{split}}
 \end{equation}
 \subsection{关于模型的讨论}\label{subsection:model_discussion}
@@ -155,11 +155,11 @@ exp\left(-\frac{(v'_i(t_{i+1}-t_i)-||\bm{q}_i-\bm{q}_{i+1}||)^2}{2\sigma^{'2}_i(
 \begin{definition}
 信息椭圆是参数空间$\theta$上由费舍尔信息矩阵定义的空间曲面:
 \begin{equation}\label{eq:ie}
-\bm{x}^\intercal \,\bm{I}_{\theta}^{-1}\bm{x}=1,\bm{x}\in \mathbb{R}^{2N}
+\bm{x}^T\,\bm{I}_{\theta}^{-1}\bm{x}=1,\bm{x}\in \mathbb{R}^{2N}
 \end{equation}
 \end{definition}
 信息椭圆各个主轴的长度衡量了特征值的大小，代表了该方向的定位精度。
-下面研究二维情形下由$I(\bm{p})=\sum \lambda_i \bm{u}_i \bm{u}_i^\intercal $决定的信息椭圆的形状，即求$I(\bm{p})$的特征值和特征向量。
+下面研究二维情形下由$I(\bm{p})=\sum \lambda_i \bm{u}_i \bm{u}_i^T$决定的信息椭圆的形状，即求$I(\bm{p})$的特征值和特征向量。
 将二维向量看成复平面的复数，$I(\bm{p})$看成复平面上的线性算子，作用规则是$I(\bm{p})\bm{x}=\sum \lambda_i (\bm{x}\cdot\bm{u}_i)\bm{u}_i$，其值域仍在复平面内，算子$I(\bm{p})$的特征值$\lambda$和特征向量$\bm{y}$满足$I(\bm{p})\bm{y}=\lambda \bm{y}$。
 
 
@@ -202,7 +202,7 @@ $\theta$满足方程
 \begin{theorem}\label{thm:ShenIden}
 设$J$是对称正定的矩阵(对于FIM这一点成立)，那么下式成立：
 \begin{equation}\label{eq:ShenIden}
-|J+\epsilon \bm{u}\bm{u}^\intercal |=|J|+\epsilon \bm{u}^\intercal J^*\bm{u}
+|J+\epsilon \bm{u}\bm{u}^T|=|J|+\epsilon \bm{u}^TJ^*\bm{u}
 \end{equation}
 其中$J^*$表示J的伴随矩阵，满足等式$JJ^*=|J|\bm{I}$
 \end{theorem}
@@ -229,7 +229,7 @@ A&B\\
 \begin{lemma}
 如果$\bm{u}$是一个n维的列向量,$\bm{I}$是n维单位阵，则我们有行列式恒等式:
 \begin{equation}\label{eq:con_eq}
-|(1+\bm{u}^\intercal \bm{u})\bm{I}-\bm{u}\bm{u}^\intercal |=(1+\bm{u}^\intercal \bm{u})^{n-1}
+|(1+\bm{u}^T\bm{u})\bm{I}-\bm{u}\bm{u}^T|=(1+\bm{u}^T\bm{u})^{n-1}
 \end{equation}
 \end{lemma}
 证明(\ref{eq:con_eq})需要下面的Woodbury 矩阵求逆公式
@@ -241,70 +241,70 @@ A&B\\
 
 \begin{proof}
 用数学归纳法证明，首先我们对$n=2$的情形直接验证可得(\ref{eq:con_eq})成立。
-假设结论对n-1维的情形成立，设$\bm{u}=(\bm{v}^\intercal ,u_n)^\intercal $,其中$\bm{v}$是n-1维的列向量，那么对$\bm{v}/\sqrt{1+u_n^2}$用归纳假设有:
+假设结论对n-1维的情形成立，设$\bm{u}=(\bm{v}^T,u_n)^T$,其中$\bm{v}$是n-1维的列向量，那么对$\bm{v}/\sqrt{1+u_n^2}$用归纳假设有:
 \begin{equation}
-|(1+\frac{||\bm{v}||^2}{1+u_n^2})\bm{I}_{n-1}-\frac{\bm{v}\bm{v}^\intercal }{1+u_n^2}|=(1+\frac{||\bm{v}||^2}{1+u_n^2})^{n-2}
+|(1+\frac{||\bm{v}||^2}{1+u_n^2})\bm{I}_{n-1}-\frac{\bm{v}\bm{v}^T}{1+u_n^2}|=(1+\frac{||\bm{v}||^2}{1+u_n^2})^{n-2}
 \end{equation}
-其中,$||\bm{v}||^2=\bm{v}^\intercal \bm{v},||\cdot||$表示欧式空间的2范数。
+其中,$||\bm{v}||^2=\bm{v}^T\bm{v},||\cdot||$表示欧式空间的2范数。
 由上式可得
 \begin{equation}
-A:=(1+u_n^2+||\bm{v}||^2)\bm{I}_{n-1}-\bm{v}\bm{v}^\intercal ,\text{with }|A|=(1+u_n^2)(1+u_n^2+||\bm{v}||)^{n-2}
+A:=(1+u_n^2+||\bm{v}||^2)\bm{I}_{n-1}-\bm{v}\bm{v}^T,\text{with }|A|=(1+u_n^2)(1+u_n^2+||\bm{v}||)^{n-2}
 \end{equation}
-对n维的情形,$(1+\bm{u}^\intercal \bm{u})\bm{I}-\bm{u}\bm{u}^\intercal $可以写成分块矩阵的形式$\left(\begin{array}{cc}
+对n维的情形,$(1+\bm{u}^T\bm{u})\bm{I}-\bm{u}\bm{u}^T$可以写成分块矩阵的形式$\left(\begin{array}{cc}
 A&-u_n\bm{v}\\
--u_n\bm{v}^\intercal &||\bm{v}||^2+1\\
+-u_n\bm{v}^T&||\bm{v}||^2+1\\
 \end{array}\right)$
 由引理(\ref{lemma:block})得:
 \begin{equation}\label{eq:LMidd}
-|(1+\bm{u}^\intercal \bm{u})\bm{I}-\bm{u}\bm{u}^\intercal |=|A|(||\bm{v}||^2+1-u_n^2 \bm{v}^\intercal A^{-1}\bm{v})
+|(1+\bm{u}^T\bm{u})\bm{I}-\bm{u}\bm{u}^T|=|A|(||\bm{v}||^2+1-u_n^2 \bm{v}^TA^{-1}\bm{v})
 \end{equation}
 由Woodbury矩阵求逆公式：
 \begin{equation}\label{eq:AInv}
-A^{-1}=\frac{1}{1+||\bm{v}||^2+u_n^2}-\frac{\bm{v}(-1+||\bm{v}||^2/(1+||\bm{v}||^2+u_n^2))^{-1}\bm{v}^\intercal }{(1+||\bm{v}||^2+u_n^2)^2}
+A^{-1}=\frac{1}{1+||\bm{v}||^2+u_n^2}-\frac{\bm{v}(-1+||\bm{v}||^2/(1+||\bm{v}||^2+u_n^2))^{-1}\bm{v}^T}{(1+||\bm{v}||^2+u_n^2)^2}
 \end{equation}
 将(\ref{eq:AInv})代入(\ref{eq:LMidd})中，化简即可得对n的情形要证的恒等式成立。
 \end{proof}
 \begin{proof}[定理(\ref{thm:ShenIden})证明]
 式(\ref{eq:ShenIden})等价于
 \begin{equation}\label{eq:ShenIden_1}
-|J+\epsilon \bm{u}\bm{u}^\intercal |=|J|(1+\epsilon \bm{u}^\intercal J^{-1}\bm{u})
+|J+\epsilon \bm{u}\bm{u}^T|=|J|(1+\epsilon \bm{u}^TJ^{-1}\bm{u})
 \end{equation}
 因为J是对称正定的矩阵,所以存在正交矩阵Q,使得$J=QDQ^{-1}$,D是对角阵,
 代入(\ref{eq:ShenIden_1})中得:
-$|D+\epsilon \bm{y}\bm{y}^\intercal |=|D|(1+\epsilon \bm{y}^\intercal D^{-1}\bm{y})$
+$|D+\epsilon \bm{y}\bm{y}^T|=|D|(1+\epsilon \bm{y}^TD^{-1}\bm{y})$
 其中$\bm{y}=Q^{-1}\bm{u}$,因此我们只需对对角矩阵证明定理成立。
 设J是n维对角阵,由Woodbury矩阵恒等式可得:
 \begin{equation}
-(J+\epsilon \bm{u}\bm{u}^\intercal )^{-1}=J^{-1}-J^{-1}\bm{u}\bm{u}^\intercal J^{-1}/(\epsilon^{-1}+\bm{u}^\intercal J^{-1}\bm{u})
+(J+\epsilon \bm{u}\bm{u}^T)^{-1}=J^{-1}-J^{-1}\bm{u}\bm{u}^TJ^{-1}/(\epsilon^{-1}+\bm{u}^TJ^{-1}\bm{u})
 \end{equation}
 整理得:
 \begin{equation}\label{eq:ShenIden_2}
-(J+\epsilon \bm{u}\bm{u}^\intercal )^{-1}=J^{-1}\frac{(1+\epsilon\bm{u}^\intercal J^{-1}\bm{u})\bm{I}-\epsilon \bm{u}\bm{u}^\intercal J^{-1}}{1+\epsilon\bm{u}^\intercal J^{-1}\bm{u}}
+(J+\epsilon \bm{u}\bm{u}^T)^{-1}=J^{-1}\frac{(1+\epsilon\bm{u}^TJ^{-1}\bm{u})\bm{I}-\epsilon \bm{u}\bm{u}^TJ^{-1}}{1+\epsilon\bm{u}^TJ^{-1}\bm{u}}
 \end{equation}
 如果我们能证明:
 \begin{equation}
-|(1+\epsilon\bm{u}^\intercal J^{-1}\bm{u})\bm{I}-\epsilon \bm{u}\bm{u}^\intercal J^{-1}|=(1+\epsilon\bm{u}^\intercal J^{-1}\bm{u})^{n-1}
+|(1+\epsilon\bm{u}^TJ^{-1}\bm{u})\bm{I}-\epsilon \bm{u}\bm{u}^TJ^{-1}|=(1+\epsilon\bm{u}^TJ^{-1}\bm{u})^{n-1}
 \end{equation}
 则通过对(\ref{eq:ShenIden_2})两边取行列式即可得到要证的式子，这里设$J=\text{diag}(\lambda_1,...\lambda_n)$,取$y=\sqrt{\epsilon}(u_1/\sqrt{\lambda_1},...u_n/\sqrt{\lambda_n})$,那么上式和(\ref{eq:con_eq})具有相同的形式，因此定理结论成立。
 \end{proof}
 定理(\ref{thm:ShenIden})可以推广为如下一般形式，证明方法不变：
 \begin{corollary}设$J$是对称正定的矩阵,则
 \begin{equation}
-|J+\epsilon \bm{u}\bm{v}^\intercal |=|J|+\epsilon \bm{u}^\intercal J^*\bm{v}
+|J+\epsilon \bm{u}\bm{v}^T|=|J|+\epsilon \bm{u}^TJ^*\bm{v}
 \end{equation}
 \end{corollary}
 下面考虑两个节点协作的情形:
 原4维FIM结构为:
 \begin{equation}
 A=\left(\begin{array}{cc}
-\bm{\Sigma}_0+\epsilon \bm{u}\bm{u}^\intercal  &-\epsilon \bm{u}\bm{u}^\intercal  \\
--\epsilon \bm{u}\bm{u}^\intercal  & \bm{\Sigma}_1+\epsilon \bm{u}\bm{u}^\intercal
+\bm{\Sigma}_0+\epsilon \bm{u}\bm{u}^T &-\epsilon \bm{u}\bm{u}^T \\
+-\epsilon \bm{u}\bm{u}^T & \bm{\Sigma}_1+\epsilon \bm{u}\bm{u}^T
 \end{array}
 \right)
 \end{equation}
 通过坐标变换将$\bm{\Sigma}_0,\bm{\Sigma}_1$对角化可以得到等价的形式:
 \begin{equation}
-A=J+\epsilon\binom{\bm{v}}{-\bm{w}}(\bm{v}^\intercal ,-\bm{w}^\intercal )
+A=J+\epsilon\binom{\bm{v}}{-\bm{w}}(\bm{v}^T,-\bm{w}^T)
 \end{equation}
 其中$v,w$为单位方向向量,方向角为$\theta$和$\phi$而J是对角矩阵，第i个对角元为$\lambda_i$,这样特征多项式$|\lambda A-I|=0$就有简单的表达形式:
 
@@ -316,11 +316,11 @@ P(\lambda)= &(\lambda-a_1)(\lambda-a_2)(\lambda-a_3)(\lambda-a_4)(1+\epsilon(\fr
 \end{equation}
 利用SPEB的定义和式(\ref{eq:4_characteristic_polynomial})，可以得到相比于非协作的情形定位误差下界下降的成分为:
 \begin{equation}
-\Delta=\sum \frac{1}{\lambda_i}-\text{SPEB}_{\text{global}}=\xi\left(\frac{\cos^2(\theta)}{a_1^2}+\frac{\sin^2(\theta)}{a_2^2}+\frac{\cos^2(\phi)}{a_3^2}+\frac{\sin^2(\phi)}{a_4^2}\right)
+\Delta=\sum \frac{1}{\lambda_i}-\text{SPEB}_{\text{global}}=\xi(\frac{\cos^2(\theta)}{a_1^2}+\frac{\sin^2(\theta)}{a_2^2}+\frac{\cos^2(\phi)}{a_3^2}+\frac{\sin^2(\phi)}{a_4^2})
 \end{equation}
 其中
 \begin{equation}
-\xi=1/\left(\frac{1}{\epsilon}+\frac{\cos^2(\phi)}{a_3}+\frac{\sin^2(\phi)}{a_4}+\frac{\cos^2(\theta)}{a_1}+\frac{\sin^2(\theta)}{a_2}\right)
+\xi=1/(\frac{1}{\epsilon}+\frac{\cos^2(\phi)}{a_3}+\frac{\sin^2(\phi)}{a_4}+\frac{\cos^2(\theta)}{a_1}+\frac{\sin^2(\theta)}{a_2})
 \end{equation}
 考察上面关于$\theta$和$\phi$的函数，我们有如下定理,推导过程见附录[\ref{B_F_0}]:
 \begin{theorem}
@@ -346,11 +346,11 @@ $I(\bm{p}_1,\dots,\bm{p}_N)$的最大特征值和最小特征值可由\textbf{�
 
 
 在条件(1),(2)成立的情况下，费舍尔信息矩阵$I(\bm{p}_1,\dots,\bm{p}_N)=a\bm{I}_{2N}+b\bm{J}$,其中$\bm{J}_{ij}=\begin{cases}
-\sum_{k=1,k\neq i}^N \bm{u}_{ik}\bm{u}_{ik}^\intercal &i=j\\
--\bm{u}_{ij}\bm{u}_{ij}^\intercal &i\neq j,
+\sum_{k=1,k\neq i}^N \bm{u}_{ik}\bm{u}_{ik}^T&i=j\\
+-\bm{u}_{ij}\bm{u}_{ij}^T&i\neq j,
 \end{cases}$，瑞利商为:
 \begin{equation}
-R(\bm{x})=b\sum_{i\leq j\leq N} (\bm{u}_{ij}^\intercal (\bm{x}_i-\bm{x}_j))^2+a,\bm{x}_i\in \mathbb{R}^2
+R(\bm{x})=b\sum_{i\leq j\leq N} (\bm{u}_{ij}^T(\bm{x}_i-\bm{x}_j))^2+a,\bm{x}_i\in \mathbb{R}^2
 \end{equation}
 容易看出，当$\bm{x}_i=\bm{x}_j$或$(\bm{x}_i-\bm{x}_j)$与$\bm{u}_{ij}$正交时，瑞利商$R(\bm{x})$取到最小值，
 利用定理(\ref{theorem:rayleigh}),关于$I(\bm{p}_1,\dots,\bm{p}_N)$的特征值，我们有如下定理:
@@ -386,7 +386,7 @@ $f(\bm{y})=\sum_{i\leq j\leq N} ||\bm{y}_i-\bm{y}_j||^2,\text{s.t } ||\bm{y}||=1
 \end{array}
 \right)
 \]
-$\bm{T}$可以写成$\bm{T}=N\bm{I}-\bm{e}\bm{e}^\intercal $,其中$\bm{e}=(\bm{I}_2,\dots,\bm{I}_2)^\intercal $。而$f(\bm{y})=\bm{y}^\intercal \bm{T}\bm{y}=N-(\bm{e}^\intercal \bm{y})^\intercal (\bm{e}^\intercal \bm{y})\leq N$取等条件是$\bm{e}^\intercal \bm{y}=\bm{0}$,这个条件限制住了两个自由度，再加上$\bm{y}$模长为1的约束，前一次不等式取等剩下的三个自由度刚好够用，
+$\bm{T}$可以写成$\bm{T}=N\bm{I}-\bm{e}\bm{e}^T$,其中$\bm{e}=(\bm{I}_2,\dots,\bm{I}_2)^T$。而$f(\bm{y})=\bm{y}^T\bm{T}\bm{y}=N-(\bm{e}^T\bm{y})^T(\bm{e}^T\bm{y})\leq N$取等条件是$\bm{e}^T\bm{y}=\bm{0}$,这个条件限制住了两个自由度，再加上$\bm{y}$模长为1的约束，前一次不等式取等剩下的三个自由度刚好够用，
 所以$\bm{y}$按该方法可以唯一取到，其张成的子空间记为$K_b$。
 具体求解可得:
 $\bm{y}_1=\frac{k}{N}\sum_{j=2}^N (\bm{p}_1-\bm{p}_j)$
@@ -405,7 +405,7 @@ M\sum_{i=1}^N||\sum_{j=1,j\neq i}^N(\bm{p}_1-\bm{p}_j)||^2=1
 \end{eqnarray}
 下面考虑$\bm{K}\cdot \bm{x}$的第j行为:
 \begin{equation}\label{eq:tt}
-\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^\intercal (\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)
+\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^T(\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)
 \end{equation}
 我们要证明上面的式子等于$\frac{N}{2}\bm{x}_j$,为此，首先化简$\frac{(\bm{u}_j-\bm{u}_k)}{||\bm{u}_j-\bm{u}_k||}$
 可以推出上式等于:
@@ -414,7 +414,7 @@ M\sum_{i=1}^N||\sum_{j=1,j\neq i}^N(\bm{p}_1-\bm{p}_j)||^2=1
 \end{equation}
 上面的式子中$\text{sgn}(j-k)$因为在式(\ref{eq:tt})中出现2次，所以相乘恒为1，它与求和指标k无关，可以作为公因子提取出来。
 所以证明
-$\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^\intercal (\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)=\frac{N}{2}\bm{x}_j
+$\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^T(\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)=\frac{N}{2}\bm{x}_j
 $
 化简为分别证明:
 $\scriptsize{
@@ -458,12 +458,12 @@ I(\bm{P})=a\bm{I}+b\bm{J}
 其中\[
 J=\left(
 \begin{array}{ccccc}
-\bm{u}_{12}\bm{u}_{12}^\intercal &-\bm{u}_{12}\bm{u}_{12}^\intercal &\bm{0}&\dots&\bm{0}\\
+\bm{u}_{12}\bm{u}_{12}^T&-\bm{u}_{12}\bm{u}_{12}^T&\bm{0}&\dots&\bm{0}\\
 &&&&\\
--\bm{u}_{12}\bm{u}_{12}^\intercal &\bm{u}_{12}\bm{u}_{12}^\intercal +\bm{u}_{23}\bm{u}_{23}^\intercal &-\bm{u}_{23}\bm{u}_{23}^\intercal &\dots&0\\
+-\bm{u}_{12}\bm{u}_{12}^T&\bm{u}_{12}\bm{u}_{12}^T+\bm{u}_{23}\bm{u}_{23}^T&-\bm{u}_{23}\bm{u}_{23}^T&\dots&0\\
 &&&&\\
 \vdots &\vdots&\ddots &\vdots&\vdots\\
-\bm{0}&\dots&\bm{0}&-\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal &\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal \\
+\bm{0}&\dots&\bm{0}&-\bm{u}_{N-1,N}\bm{u}_{N-1,N}^T&\bm{u}_{N-1,N}\bm{u}_{N-1,N}^T\\
 \end{array}
 \right)
 \]
@@ -475,7 +475,7 @@ J=\left(
 \begin{lemma}\label{lemma:change}
 设L是$m\times n$的矩阵，$a,\epsilon > 0$则
 \begin{equation}
-|a\bm{I}_m+\epsilon \bm{L}\bm{L}^\intercal |=a^m|\bm{I}_n+\frac{\epsilon}{a} \bm{L}^\intercal \bm{L}|
+|a\bm{I}_m+\epsilon \bm{L}\bm{L}^T|=a^m|\bm{I}_n+\frac{\epsilon}{a} \bm{L}^T\bm{L}|
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -483,17 +483,17 @@ J=\left(
 考虑到
 \[
 \left(\begin{array}{cc}
-\bm{I}_n+\bm{L}^\intercal \bm{L}&\bm{0}\\
+\bm{I}_n+\bm{L}^T\bm{L}&\bm{0}\\
 \bm{L}&\bm{I}_m\\
 \end{array}\right)\sim\left(\begin{array}{cc}
-\bm{I}_n&-\bm{L}^\intercal \\
+\bm{I}_n&-\bm{L}^T\\
 \bm{L}&\bm{I}_m\\
 \end{array}\right)\sim\left(\begin{array}{cc}
-\bm{I}_n&-\bm{L}^\intercal \\
-0&\bm{I}_m+\bm{L}\bm{L}^\intercal \\
+\bm{I}_n&-\bm{L}^T\\
+0&\bm{I}_m+\bm{L}\bm{L}^T\\
 \end{array}\right)
 \]
-其中$\sim$表示矩阵相抵，两边取行列式即得$|\bm{I}_m+\bm{L}\bm{L}^\intercal |=|\bm{I}_n+\bm{L}^\intercal \bm{L}|$,证毕。
+其中$\sim$表示矩阵相抵，两边取行列式即得$|\bm{I}_m+\bm{L}\bm{L}^T|=|\bm{I}_n+\bm{L}^T\bm{L}|$,证毕。
 \end{proof}
 
 
@@ -519,7 +519,7 @@ $
 最后证明$U_n(\lambda)$是关于$\lambda$的多项式,而这只需要证明$U_1(\lambda),U_2(\lambda)$是多项式即可。
 \end{proof}
 
-$\bm{I}(\bm{p}_1,\dots,\bm{p}_N)$的特征多项式为$|(\lambda-a)\bm{I}-b\bm{L}\bm{L}^\intercal |$,
+$\bm{I}(\bm{p}_1,\dots,\bm{p}_N)$的特征多项式为$|(\lambda-a)\bm{I}-b\bm{L}\bm{L}^T|$,
 其中L是2N乘以N的矩阵:
 \[
 L=\left(
@@ -532,11 +532,11 @@ L=\left(
 \end{array}
 \right)
 \]
-为获得该多项式的全部零点，我们进一步设$u_i=(1,0)^\intercal $，即目标节点作直线运动，后面可以看到直线运动对应着误差最小的情形。
-根据引理(\ref{lemma:change}),$|(\lambda-a)\bm{I}-bLL^\intercal |=(\lambda-a)^{2N}|\bm{I}_n-\frac{b}{\lambda-a}L^\intercal L|$,
-$L^\intercal L$是N阶方阵：
+为获得该多项式的全部零点，我们进一步设$u_i=(1,0)^T$，即目标节点作直线运动，后面可以看到直线运动对应着误差最小的情形。
+根据引理(\ref{lemma:change}),$|(\lambda-a)\bm{I}-bLL^T|=(\lambda-a)^{2N}|\bm{I}_n-\frac{b}{\lambda-a}L^TL|$,
+$L^TL$是N阶方阵：
 \[
-L^\intercal L=\left(
+L^TL=\left(
 \begin{array}{ccccc}
 2&-1&\dots&&0\\
 -1&2&-1&\dots&0\\
@@ -546,11 +546,11 @@ L^\intercal L=\left(
 \end{array}
 \right)
 \]
-设$\bm{K}_{N-1}$为$L^\intercal L$第N-1阶主子式，则
-$|(\lambda-a)\bm{I}-bLL^\intercal |=(\lambda-a)^{N+1}|(\lambda-a)\bm{I}_{N-1}-b\bm{K}_{N-1}|$
+设$\bm{K}_{N-1}$为$L^TL$第N-1阶主子式，则
+$|(\lambda-a)\bm{I}-bLL^T|=(\lambda-a)^{N+1}|(\lambda-a)\bm{I}_{N-1}-b\bm{K}_{N-1}|$
 设$n:=N$,则$\bm{K}_{n-1}=2\bm{I}_{n-1}-\bm{S}$,由引理(\ref{lemma:special})可求出$\bm{I}(\bm{p}_1,\dots,\bm{p}_N)$的全部特征值。
 \[
-f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac{1}{a+2b(1-\cos(\frac{\pi j}{n}))}\right)
+f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac{1}{a+2b(1-\cos(\frac{\pi j}{n}))})
 \]
 当$n\to \infty$,根据Riemann积分的定义:$\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\int_0^1 \frac{1}{a+2b(1-cos(\pi x))}dx$
 化为复积分由留数定理可得$\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\frac{1}{\sqrt{a^2+4ab}}$
@@ -571,8 +571,8 @@ f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac
   有限序列$t_1,t_2,\dots,t_r$满足$t_j\geq 1$对于$j\geq2$可以递推地定义有限连分式$[t_1,t_2,\dots,t_r]:=t_1+\frac{1}{[t_2,\dots,t_r]}$
 \end{definition}
 \begin{theorem}\label{thm:basic}
-  设$p_j=t_j p_{j-1}+p_{j-2},q_j=t_j q_{j-1}+q_{j-2}$,$M_j=\left(\begin{matrix}p_j&p_{j-1}\\q_j&q_{j-1}\end{matrix}\right)$
-  $p_0,p_1,q_0,q_1$由$M_0=I_2$给出,且$T_j=\left(\begin{matrix}t_j&1\\1&0\end{matrix}\right)$则有下面三个恒等式:
+  设$p_j=t_j p_{j-1}+p_{j-2},q_j=t_j q_{j-1}+q_{j-2}$,$M_j=(\begin{matrix}p_j&p_{j-1}\\q_j&q_{j-1}\end{matrix})$
+  $p_0,p_1,q_0,q_1$由$M_0=I_2$给出,且$T_j=(\begin{matrix}t_j&1\\1&0\end{matrix})$则有下面三个恒等式:
   \begin{enumerate}
     \item $M_j=M_{j-1}T_j$
     \item $\binom{p_j}{q_j}=(\prod_{i=1}^r T_i )\binom{1}{0}$
@@ -583,7 +583,7 @@ f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac
 若$\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$存在，该极限是形如$\frac{a+b\sqrt{m}}{c}$的二次根式当且仅当序列$t_i$从某项开始是周期的，即$\exists c,rc,\,s.t.\, t_{i}=t_{i+r},\forall i\geq c$。
 \end{theorem}
 \begin{remark}
-对于定理\ref{theorem:quadratic_cyclic},设$\left(\begin{matrix}a&b\\c&d\end{matrix}\right)=(\prod_{i=1}^{rc} T_{i+c})$，称$\left(\begin{matrix}a&b\\c&d\end{matrix}\right)$对应着分式线性变换K,如果$K(z)=\frac{az+b}{cz+d}$。
+对于定理\ref{theorem:quadratic_cyclic},设$(\begin{matrix}a&b\\c&d\end{matrix})=(\prod_{i=1}^{rc} T_{i+c})$，称$(\begin{matrix}a&b\\c&d\end{matrix})$对应着分式线性变换K,如果$K(z)=\frac{az+b}{cz+d}$。
 可以证明系数为实数的分式线性变换以函数复合作为群运算与行列式为1的2阶方阵以矩阵乘积作为群运算是同构的。
 c之前的$t_i$对应着矩阵$T_i$的乘积矩阵看作分式线性变换F。可以进一步说明二次根式和T和F的有如下的关系:
 \begin{enumerate}
@@ -605,7 +605,7 @@ T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 具体推导过程详见附录[\ref{B_F_1}]
 
 这个求解是针对目标节点的记时起点或终点而言的，如果针对其时间中点，则其可分别看成两段轨迹的起点和终点，
-其费舍尔信息矩阵为:$\bm{I}_p=\lambda I+M_1\bm{u}\bm{u}^\intercal +M_2\bm{v}\bm{v}^\intercal $
+其费舍尔信息矩阵为:$\bm{I}_p=\lambda I+M_1\bm{u}\bm{u}^T+M_2\bm{v}\bm{v}^T$
 其中$\bm{u},\bm{v}$是与目标位置$\bm{p}$直接相连的两个位置$\bm{p}_1,\bm{p}_2$与目标节点的方向向量。$M_1,M_2$满足递推公式(\ref{eq:recursive_efim})，
 但具体角度参数可能不一样，假设$N_a$是奇数使得时间中点存在于待测位置中，于是每个M算到$\frac{N_a+1}{2}$
 但如果我们考虑的是$N_a\to \infty$的情形，则不受终止位置的限制。
@@ -614,7 +614,7 @@ $\bm{I}_p$的两个特征值为可由式(\ref{eq:Lambda})得出：
 \lambda+\frac{M_1+M_2\pm \sqrt{M_1^2+M_2^2+2M_1M_2\cos2\phi}}{2}
 \]
 $\phi$为夹角$\angle(\bm{p}_1-\bm{p},\bm{p}_2-\bm{p})$,注意到时间中点时两个特征值均比$\lambda$大。
-我们先考虑所有$\bm{u}_i=(1,0)^\intercal $的特殊情形，此时一个特征值为$\lambda$，另一个特征值写成连分式为：
+我们先考虑所有$\bm{u}_i=(1,0)^T$的特殊情形，此时一个特征值为$\lambda$，另一个特征值写成连分式为：
 \begin{equation}\label{eq:gcf_1}
 \lambda+\cfrac{2}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}
 \end{equation}
@@ -684,14 +684,13 @@ M^*=\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}
 \begin{itemize}
 \item 通过蒙特卡罗仿真进一步验证了定理~\ref{theorem:exponential_decreasing}的正确性。
 \item $\lambda=\frac{a}{b}$，表示锚点定位强度与目标节点协作强度之比，当$\lambda$较大即锚点定位更强时，图中协作信息量下降得更快，表明更远的协作链路所能提供的信息更少。
-\item 实际随机模拟中的信息衰减速度要快于定理~\ref{theorem:exponential_decreasing}给出的上界，这主要是因为随机模拟中出现角度正交的情况时会阻断信息量从较远链路的传播。为了讨论信息衰减下界，我们取$\lambda=1$,并假设链路的夹角$\theta_i$服从零均值的正态分布，对于给定的$\Delta \theta$标准差$\sigma$满足$3\sigma=\Delta \theta$,由$3-\sigma$原则可近似认为角度变化不会超过$\Delta$,数值结果如图\ref{fig:continuous_fraction_exponential_lower_bound}所示
+\item 实际随机模拟中的信息衰减速度要快于定理~\ref{theorem:exponential_decreasing}给出的上界，这主要是因为随机模拟中出现角度正交的情况时会阻断信息量从较远链路的传播。为了讨论信息衰减下界，我们取$\lambda=1$,并假设链路的夹角$\theta_i$服从零均值的正态分布，对于给定的$\Delta \theta$标准差$\sigma$满足$3\sigma=\Delta \theta$,由$3-\sigma$原则可近似认为角度变化不会超过$\Delta$,数值结果如图\ref{decreasing_exponential_lower_bound.png}所示
     \begin{figure}
       \centering
       \includegraphics[width=250pt]{decreasing_exponential_lower_bound.png}
       \caption{连分式指数衰减下界图示}\label{fig:continuous_fraction_exponential_lower_bound}
     \end{figure}
-
-    分析图\ref{fig:continuous_fraction_exponential_lower_bound}可知，对于同等定位强度，如果目标节点角度变化得比较快，则信息衰减得也更快，多条链路后的位置将提供更少的信息量。
+    分析图\ref{decreasing_exponential_lower_bound.png}可知，对于同等定位强度，如果目标节点角度变化得比较快，则信息衰减得也更快，多条链路后的位置将提供更少的信息量。
 \end{itemize}
 \end{remark}
 \begin{remark}
@@ -711,12 +710,12 @@ M^*=\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}
 \[\scriptsize{
 J=\left(
 \begin{array}{ccccc}
-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal &-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal &\bm{0}&\dots&\bm{0}\\
+\lambda_{12}\bm{u}_{12}\bm{u}_{12}^T&-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^T&\bm{0}&\dots&\bm{0}\\
 &&&&\\
--\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal &\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal +&-\lambda_{23}\bm{u}_{23}\bm{u}_{23}^\intercal &\dots&0\\
-&\lambda_{23}\bm{u}_{23}\bm{u}_{23}^\intercal &&&\\
+-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^T&\lambda_{12}\bm{u}_{12}\bm{u}_{12}^T+&-\lambda_{23}\bm{u}_{23}\bm{u}_{23}^T&\dots&0\\
+&\lambda_{23}\bm{u}_{23}\bm{u}_{23}^T&&&\\
 \vdots &\vdots&\ddots &\vdots&\vdots\\
-\bm{0}&\dots&\bm{0}&-\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal &\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal \\
+\bm{0}&\dots&\bm{0}&-\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^T&\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^T\\
 \end{array}
 \right)}
 \]
@@ -749,7 +748,7 @@ J=\left(
 \begin{lemma}\label{lemma:hexagon}
   设$u$是模长为1的平面向量，那么有:
 \begin{equation}\label{eq:equiv}
-  u^\intercal ((\lambda+\frac{3}{2})I_2-\frac{1}{\lambda+\frac{3}{2}}(\frac{3}{2}I_2-uu^\intercal ))^{-1}u
+  u^T((\lambda+\frac{3}{2})I_2-\frac{1}{\lambda+\frac{3}{2}}(\frac{3}{2}I_2-uu^T))^{-1}u
   =((\lambda+\frac{3}{2})-\frac{1/2}{\lambda+\frac{3}{2}})^{-1}
 \end{equation}
 \end{lemma}
@@ -785,6 +784,6 @@ J=\left(
   \item
     推导得出二维场景下特殊完全图的邻接矩阵所有特征值，其中使用瑞利商给出了最大 特征值的表达式
   \item 推导得出二维场景下特殊度为2的图的邻接矩阵的所有特征值；当网络规模趋向无穷大时，求出了所有特征值的倒数和的平均值的极限
-  \item 使用连分式推导得出形如式(\ref{eq:Pab})的对称正定矩阵$\bm{A}$确定的$\bm{A}^{-1}_{1\times2,1\times2}$的两个特征值；分析得出了决定特征值的连分式的序列指数收敛的特性，并做出适当的推广。
+  \item 使用连分式推导得出对称正定矩阵$\bm{A}$确定的$\bm{A}^{-1}_{1\times2,1\times2}$的两个特征值；分析得出了决定特征值的连分式的序列指数收敛的特性。
   \end{itemize}
   \end{itemize}

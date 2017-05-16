@@ -11,7 +11,7 @@ I(\bm{p})=-\mathbb{E}_{\bm{x}}(\bigtriangledown_{\bm{p}} \log f(\vec{x}|\bm{p}))
 \begin{equation}
 \bigtriangledown_{\bm{p}}\ln f=-\sum_{i=1}^{N_b}\frac{||\bm{p}_i^b-\bm{p}||-x_i}{\sigma_i^2}\frac{\bm{p}^b_i-\bm{p}}{||\bm{p}^b_i-\bm{p}||}
 \end{equation}
-注意到$\frac{||\bm{p}_i^b-\bm{p}||-x_i}{\sigma_i}~ N(0,1)$，所以按照费舍尔信息矩阵的定义可得到式(\ref{eq:uu})的结果。
+注意到$\frac{||\bm{p}_i^b-\bm{p}||-x_i}{\sigma_i}\approx N(0,1)$，所以按照费舍尔信息矩阵的定义可得到式(\ref{eq:uu})的结果。
 \section{研究成果的一些推导过程}
 \subsection{两个未知节点协作最小误差界的一个充分条件}\label{B_F_0}
 由式(\ref{eq:4_characteristic_polynomial})，SPEB为其所有根的倒数和，因此具有如下形式
@@ -89,9 +89,61 @@ V^{-1}\bm{u}=\begin{pmatrix}
                    \end{pmatrix}^{-1}\bm{w})^{-1}
                    =\frac{1}{1+\frac{\cos^2(\phi_1-\phi_2)}{T_2}+\frac{\sin^2(\phi_1-\phi_2)}{\lambda}}
 \]
-递推可得一般形式：
+递推可得一般形式。
 终止条件：当计算到原费舍尔信息矩阵的右下角时$T_{N_a-1}=\lambda$,
 所以对$N_a$维矩阵，协作方向有$N_a-1$,而得到的有限连分式数列也恰有$N_a-1$项。
+\subsection{定理\ref{theorem:arbitrary_curve}的证明}\label{B_F_6}
+式(\ref{eq:starting_or_ending})给出了式(\ref{eq:limiting_cf})右端是$\bm{p}(t)$为直线的情形。由于对于任意的平面曲线和角度序列$\{\theta_i\}$,$T_1(N_a)$是关于$N_a$的增函数且小于$\lambda+1$，因此式(\ref{eq:limiting_cf})左端的极限总是存在的。
+考虑由$\bm{p}(t)$确定的角度序列$\{\theta_i\}$以如下的方式趋近于直线对应的直线序列:
+\[
+\{\theta_1,\theta_2,\theta_3,\dots\}\rightarrow\{0,\theta_2,\theta_3,\dots\}\rightarrow
+\{0,0,\theta_3,\dots\}\rightarrow\dots
+\]
+记将前n个角度置零后由式(\ref{eq:recursive_efim})确定的连分式为$K_n$，我们首先给出:
+\begin{equation}\label{eq:arbitrary_curve_1}
+\lim_{n\to\infty}K_n=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
+\end{equation}
+为证式(\ref{eq:arbitrary_curve_1}),记角度序列$\{0,0,\dots,\theta_{n+1},\dots,\}$去掉前r项后对应的连分式为$K^r_n$
+\[
+|K_n-M^*|=\frac{|\frac{1}{M^*}-\frac{1}{K^2_n}|}{(1+\frac{1}{M^*})(1+\frac{1}{K^2_n})}\leq |\frac{1}{M^*}-\frac{1}{K^2_n}|
+\]
+\[
+|\frac{1}{M^*}-\frac{1}{K^2_n}|= \frac{|\frac{1}{M^*}-\frac{1}{K^3_n}|}{K^2_n(M^*+1)(1+\frac{1}{K^3_n})}=
+ \frac{|\frac{1}{M^*}-\frac{1}{K^3_n}|}{(M^*+1)(\lambda+1+\frac{1}{K^3_n+1})}\leq \frac{|\frac{1}{M^*}-\frac{1}{K^3_n}|}{(\lambda+1)^2}
+\]
+当$r<n$ 时，
+\[
+|\frac{1}{M^*}-\frac{1}{K^r_n}|\leq \frac{|\frac{1}{M^*}-\frac{1}{K^{r+1}_n}|}{(\lambda+1)^2}
+\]
+因此:
+\[
+|K_n-M^*|\leq \frac{|\frac{1}{M^*}-\frac{1}{K^{n}_n}|}{(\lambda+1)^{2(n-2)}}
+\]
+故式(\ref{eq:arbitrary_curve_1})成立。
+补充$K_0=\lim_{\Delta t\to 0}T_1(N_a)$这样式(\ref{eq:limiting_cf})即等价为
+\begin{equation}\label{eq:equivalent_limiting_cf}
+\sum_{i=1}^{\infty}(K_{i-1}-K_{i})=0
+\end{equation}
+先考虑$K_0-K_1$，二者的差别是$\theta_1$是否为0，
+\[
+K_0-K_1=\frac{1}{1+\frac{1}{K_1^1}}-\frac{1}{1+\frac{1}{K_1^1}+\sin^2\theta_1(\frac{1}{\lambda}-\frac{1}{K_1^1})}\leq
+\sin^2\theta_1(\frac{1}{\lambda}-\frac{1}{K_1^1})
+\]
+类似式(\ref{eq:arbitrary_curve_1})的推导:
+\[
+K_r-K_{r+1}\leq \sin^2\theta_{r+1}(\frac{1}{\lambda}-\frac{1}{K_{r+1}^{r+1}})\frac{1}{(\lambda+1)^{2r}}
+\]
+由条件$\bm{p}'(t)$存在且连续可得切向量是连续变化的，由微分中值定理在闭区间内存在常数c使得角度变化量$\theta_i\leq c\Delta t$
+由正弦函数的单调性推出:
+\[
+K_r-K_{r+1}\leq \sin^2 (c\Delta t) \frac{1}{\lambda}\frac{1}{(\lambda+1)^{2r}}
+\]
+因此
+\begin{equation}\label{eq:quatratic_convergence}
+0\leq \sum_{i=1}^{N_a}(K_{i-1}-K_{i})\leq \sin^2 (c\Delta t) \frac{1}{\lambda}\sum_{i=1}^{\infty}\frac{1}{(\lambda+1)^{2i}}
+\end{equation}
+无穷级数$\sum_{i=1}^{\infty}\frac{1}{(\lambda+1)^{2i}}$收敛，所以当$\Delta t\to 0$时$N_a\to \infty$,式(\ref{eq:equivalent_limiting_cf})成立。
+
 \subsection{单节点动态定位问题等效费舍尔信息衰减上下界}\label{B_F_2}
 考虑在原有基础上增加一层节点，即利用上距离时间中点前后更远的两个时刻的位置，由对称性我们只需考虑单边，
 于是协作层数由原来的$N_a-1$变为$N_a$,等效费舍尔信息矩阵较大的特征值分别记为$T_1,T'_1$,为便于比较，我们在$T_1$中引入虚拟节点将其层数也拓展为$N_a$,它只有锚点的定位信息，这样它们的区别是连分式的末端$T_{N_a}=\lambda$,$T'_{N_a}=\lambda+\frac{1}{1+1/\lambda}$
@@ -130,8 +182,7 @@ T_{N_a}=\sum_{k=1}^{N_a-1}\Delta_{+}T_k
 \[
 |T_{N_a}-T_{\infty}|=\sum_{k=N_a}^{\infty}\Delta_{+}T_k\leq \frac{1}{\lambda^2+2\lambda}\sum_{k=N_a}^{\infty}\frac{1}{(\lambda+1)^{2(k-2)}}=\frac{1}{(\lambda^2+2\lambda)^2}\frac{1}{(\lambda+1)^{2(N_a-3)}}
 \]
-另一方面:
-$|T_{N_a+1}-T_{\infty}|$
+取$q=(\lambda+1)^2$，其余常数为C即可。
 \subsection{单节点非均一测距误差等效费舍尔信息矩阵推导}\label{B_F_3}
 类似式(\ref{eq:initial_efim})有:
 \[
