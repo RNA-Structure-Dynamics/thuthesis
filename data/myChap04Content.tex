@@ -1,6 +1,6 @@
-\chapter{特殊结构网络求解}\label{cha:content4}
-\section{全连接网络节点平均定位误差求解}\label{section:complete_graph_cooperation}
-{全连接网络描述与求解}
+\chapter{特殊结构网络}\label{cha:content4}
+\section{特殊全连接网络}\label{section:complete_graph_cooperation}
+{特殊全连接网络描述与求解}
 在协作定位网络的问题模型下，给出下面三个简化条件:
 \begin{enumerate}
 \item 锚点测距方差$\sigma_i^2=\frac{1}{a}$
@@ -10,20 +10,26 @@
 $I(\bm{p}_1,\dots,\bm{p}_N)$的最大特征值和最小特征值可由\textbf{瑞利商}求出，关于瑞利商有如下定理:
 \begin{theorem}\label{theorem:rayleigh}
   设$\bm{A}$是一个对称正定的矩阵，设$\bm{v}_{\lambda}$为A的特征值$\lambda$对应的特征向量，则:
-\[
-\displaystyle\lambda_{\text{max}}=\max_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x},\bm{v}_{\lambda_{\text{max}}}=\rgmax_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}
-\]\[
-\displaystyle\lambda_{\text{min}}=\min_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x},\bm{v}_{\lambda_{\text{min}}}=\rgmin_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}
-\]
+\begin{align*}
+\begin{cases}
+\lambda_{\text{max}}&=\max_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}\\
+\bm{v}_{\lambda_{\text{max}}}&=\rgmax_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}
+\end{cases}\quad
+\begin{cases}
+\lambda_{\text{min}}&=\min_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}\\
+\bm{v}_{\lambda_{\text{min}}}&=\rgmin_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}
+\end{cases}
+\end{align*}
 \end{theorem}
 
-
-在条件(1),(2)成立的情况下，费舍尔信息矩阵$I(\bm{p}_1,\dots,\bm{p}_N)=a\bm{I}_{2N}+b\bm{J}$,其中$\bm{J}_{ij}=\begin{cases}
-\sum_{k=1,k\neq i}^N \bm{u}_{ik}\bm{u}_{ik}^\intercal &i=j\\
--\bm{u}_{ij}\bm{u}_{ij}^\intercal &i\neq j,
-\end{cases}$，瑞利商为:
+在条件(1),(2)成立的情况下，费舍尔信息矩阵$I(\bm{p}_1,\dots,\bm{p}_N)=a\bm{I}_{2N}+b\bm{J}$,其中
+\[\bm{J}_{ij}=\begin{cases}
+\sum_{k=1,k\neq i}^N \bm{u}_{ik}\bm{u}_{ik}^{\textrm{T}} &i=j\\
+-\bm{u}_{ij}\bm{u}_{ij}^{\textrm{T}} &i\neq j,
+\end{cases}
+\]瑞利商为:
 \begin{equation}
-R(\bm{x})=b\sum_{i\leq j\leq N} (\bm{u}_{ij}^\intercal (\bm{x}_i-\bm{x}_j))^2+a,\bm{x}_i\in \mathbb{R}^2
+R(\bm{x})=b\sum_{i\leq j\leq N} (\bm{u}_{ij}^{\textrm{T}} (\bm{x}_i-\bm{x}_j))^2+a,\bm{x}_i\in \mathbb{R}^2
 \end{equation}
 容易看出，当$\bm{x}_i=\bm{x}_j$或$(\bm{x}_i-\bm{x}_j)$与$\bm{u}_{ij}$正交时，瑞利商$R(\bm{x})$取到最小值，
 利用定理(\ref{theorem:rayleigh}),关于$I(\bm{p}_1,\dots,\bm{p}_N)$的特征值，我们有如下定理:
@@ -35,12 +41,13 @@ R(\bm{x})=b\sum_{i\leq j\leq N} (\bm{u}_{ij}^\intercal (\bm{x}_i-\bm{x}_j))^2+a,
 设$\mathring{p}_i$表示$\bm{p}_i$绕原点旋转$90^{\circ}$后的向量,$\bm{e}_1=(1,0),\bm{e}_2=(0,1)$,
 容易看出
 \[
-V_a \supset\text{span}\{\{\bm{\mathring{p}_1},\bm{\mathring{p}_2},...\bm{\mathring{p}} _N\},\{\bm{e}_1,\bm{e}_1,...\bm{e}_1\},\{\bm{e}_2,\bm{e}_2,...\bm{e}_2\}\}:=K_a
+V_a \supset\text{span}\{\{\bm{\mathring{p}_1},\bm{\mathring{p}_2},\dots,\bm{\mathring{p}} _N\},\{\bm{e}_1,\bm{e}_1,\dots,\bm{e}_1\},\{\bm{e}_2,\bm{e}_2,\dots,\bm{e}_2\}\}:=K_a
 \]
 下面证明$a+Nb$是$I(\bm{p}_1,\dots,\bm{p}_N)$的最大特征值,由Cauchy不等式:
-\begin{equation}
-R(\bm{y})\leq b\sum_{i\leq j\leq N} ||\bm{u}_{ij}||^2||\bm{y}_i-\bm{y}_j||^2+a=b\sum_{i\leq j\leq N}||\bm{y}_i-\bm{y}_j||^2+a
-\end{equation}
+\begin{align}\notag
+R(\bm{y})&\leq b\sum_{i\leq j\leq N} ||\bm{u}_{ij}||^2||\bm{y}_i-\bm{y}_j||^2+a\\
+&=b\sum_{i\leq j\leq N}||\bm{y}_i-\bm{y}_j||^2+a
+\end{align}
 取等条件是$\forall i,j\in \{1,2,...N\},i\neq j$,有$\bm{y}_i-\bm{y}_j$与$\bm{u}_{ij}$均平行,比如可以取
 $\bm{y}_1-\bm{y}_j=k(\bm{p}_1-\bm{p}_j),j=2,...N$。
 满足
@@ -59,7 +66,7 @@ $f(\bm{y})=\sum_{i\leq j\leq N} ||\bm{y}_i-\bm{y}_j||^2,\text{s.t } ||\bm{y}||=1
 \end{array}
 \right)
 \]
-$\bm{T}$可以写成$\bm{T}=N\bm{I}-\bm{e}\bm{e}^\intercal $,其中$\bm{e}=(\bm{I}_2,\dots,\bm{I}_2)^\intercal $。而$f(\bm{y})=\bm{y}^\intercal \bm{T}\bm{y}=N-(\bm{e}^\intercal \bm{y})^\intercal (\bm{e}^\intercal \bm{y})\leq N$取等条件是$\bm{e}^\intercal \bm{y}=\bm{0}$,这个条件限制住了两个自由度，再加上$\bm{y}$模长为1的约束，前一次不等式取等剩下的三个自由度刚好够用，
+$\bm{T}$可以写成$\bm{T}=N\bm{I}-\bm{e}\bm{e}^{\textrm{T}} $,其中$\bm{e}=(\bm{I}_2,\dots,\bm{I}_2)^{\textrm{T}} $。而$f(\bm{y})=\bm{y}^{\textrm{T}} \bm{T}\bm{y}=N-(\bm{e}^{\textrm{T}} \bm{y})^{\textrm{T}} (\bm{e}^{\textrm{T}} \bm{y})\leq N$取等条件是$\bm{e}^{\textrm{T}} \bm{y}=\bm{0}$,这个条件限制住了两个自由度，再加上$\bm{y}$模长为1的约束，前一次不等式取等剩下的三个自由度刚好够用，
 所以$\bm{y}$按该方法可以唯一取到，其张成的子空间记为$K_b$。
 具体求解可得:
 $\bm{y}_1=\frac{k}{N}\sum_{j=2}^N (\bm{p}_1-\bm{p}_j)$
@@ -71,33 +78,36 @@ M\sum_{i=1}^N||\sum_{j=1,j\neq i}^N(\bm{p}_1-\bm{p}_j)||^2=1
   在条件(3)$\angle\bm{u}_j=\frac{2\pi j}{n}$的进一步假设下，设$\bm{x}\in (K_a\oplus K_b)^{\bot}$,
   下面证明$\bm{x}$是矩阵$\bm{J}$的特征值为$\frac{N}{2}$对应的特征向量。
   由正交性条件，有:
-\begin{eqnarray}
-\sum \bm{x}_i^{(1)}=\sum x_i^{(2)}=0\\
-\sum \bm{x}_i \cdot \bm{u}_i=\sum x_i^{(1)} \cos(\frac{2\pi j}{n})+x_i^{(2)} \sin(\frac{2\pi j}{n}) =0\label{eq:coupling1}\\
-\sum \bm{x}_i \cdot \mathring{\bm{u}}_i=\sum -x_i^{(1)} \sin(\frac{2\pi j}{n})+x_i^{(2)} \cos(\frac{2\pi j}{n}) =0\label{eq:coupling2}
-\end{eqnarray}
+\begin{align}\notag
+\sum \bm{x}_i^{(k)}&=0,k=1,2\\
+\sum \bm{x}_i \cdot \bm{u}_i&=\sum x_i^{(1)} \cos(\frac{2\pi j}{n})+x_i^{(2)} \sin(\frac{2\pi j}{n})=0
+\label{eq:coupling1}\\
+\sum \bm{x}_i \cdot \mathring{\bm{u}}_i &=\sum -x_i^{(1)} \sin(\frac{2\pi j}{n})+x_i^{(2)} \cos(\frac{2\pi j}{n}) =0\label{eq:coupling2}
+\end{align}
 下面考虑$\bm{K}\cdot \bm{x}$的第j行为:
 \begin{equation}\label{eq:tt}
-\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^\intercal (\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)
+\left(\bm{K}\cdot \bm{x}\right)_{(\cdot,j)}=\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^{\textrm{T}} (\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)
 \end{equation}
 我们要证明上面的式子等于$\frac{N}{2}\bm{x}_j$,为此，首先化简$\frac{(\bm{u}_j-\bm{u}_k)}{||\bm{u}_j-\bm{u}_k||}$
 可以推出上式等于:
 \begin{equation}
 \frac{(\bm{u}_j-\bm{u}_k)}{||\bm{u}_j-\bm{u}_k||}=\text{sgn}(j-k)\binom{-\sin\frac{\pi(j+k)}{n}}{\cos\frac{\pi(j+k)}{n}}
 \end{equation}
-上面的式子中$\text{sgn}(j-k)$因为在式(\ref{eq:tt})中出现2次，所以相乘恒为1，它与求和指标k无关，可以作为公因子提取出来。
-所以证明
-$\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^\intercal (\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)=\frac{N}{2}\bm{x}_j
-$
+上面的式子中符号函数$\text{sgn}(j-k)$因为在式(\ref{eq:tt})中出现2次，所以相乘恒为1，它与求和指标k无关，可以作为公因子提取出来。
+所以证明\[
+\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^{\textrm{T}} (\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)=\frac{N}{2}\bm{x}_j
+\]
 化简为分别证明:
-$\scriptsize{
+\begin{align*}
 (*)\sum ((-\sin\frac{(j+k)\pi}{n},\cos\frac{(j+k)\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}})
-\cos\frac{(j+k)\pi}{n}=\frac{N}{2}x_j^{(2)}}$
-$(**)\scriptsize{\sum ((-\sin\frac{(j+k)\pi}{n},\cos\frac{(j+k)\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}})
-(-\sin\frac{(j+k)\pi}{n})=\frac{N}{2}x_j^{(1)}}$\\
+\cos\frac{(j+k)\pi}{n}&=\frac{N}{2}x_j^{(2)}\\
+(**)\sum ((-\sin\frac{(j+k)\pi}{n},\cos\frac{(j+k)\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}})
+(-\sin\frac{(j+k)\pi}{n})&=\frac{N}{2}x_j^{(1)}
+\end{align*}
 (*)式等价于证明：
-$\sum (-\sin\frac{(j+k)2\pi}{n},1+\cos\frac{(j+k)2\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}}=Nx_j^{(2)}
-$
+\[
+\sum (-\sin\frac{(j+k)2\pi}{n},1+\cos\frac{(j+k)2\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}}=Nx_j^{(2)}
+\]
 在(\ref{eq:coupling1}),(\ref{eq:coupling2})式中，分别将(\ref{eq:coupling1})乘以$\sin(\frac{2\pi k}{n})$与(\ref{eq:coupling2})乘以$\cos(\frac{2\pi k}{n})$相减得:
 \begin{equation}
 \sum x_i^{(1)}\sin\frac{(j+k)2\pi}{n}-x_i^{(2)}\cos\frac{(j+k)2\pi}{n}=0
@@ -118,7 +128,7 @@ $
 \end{itemize}
 
 \end{remark}
-\section{线型网络节点平均定位误差求解}\label{section:linear_network}
+\section{线型网络}\label{section:linear_network}
 在动态协作定位网络的问题模型下，得到的费舍尔信息矩阵是三对角矩阵，在时间段[0,T]内，为研究减小时间间隔对定位性能的提高，我们需要对原来的模型作出如下的简化:
 \begin{itemize}
 \item 锚点测距方差$\sigma_i^2=\frac{1}{a}$
@@ -131,12 +141,12 @@ I(\bm{P})=a\bm{I}+b\bm{J}
 其中\[
 J=\left(
 \begin{array}{ccccc}
-\bm{u}_{12}\bm{u}_{12}^\intercal &-\bm{u}_{12}\bm{u}_{12}^\intercal &\bm{0}&\dots&\bm{0}\\
+\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &-\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\bm{0}&\dots&\bm{0}\\
 &&&&\\
--\bm{u}_{12}\bm{u}_{12}^\intercal &\bm{u}_{12}\bm{u}_{12}^\intercal +\bm{u}_{23}\bm{u}_{23}^\intercal &-\bm{u}_{23}\bm{u}_{23}^\intercal &\dots&0\\
+-\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} +\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &-\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &\dots&0\\
 &&&&\\
 \vdots &\vdots&\ddots &\vdots&\vdots\\
-\bm{0}&\dots&\bm{0}&-\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal &\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal \\
+\bm{0}&\dots&\bm{0}&-\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} &\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} \\
 \end{array}
 \right)
 \]
@@ -148,7 +158,7 @@ J=\left(
 \begin{lemma}\label{lemma:change}
 设L是$m\times n$的矩阵，$a,\epsilon > 0$则
 \begin{equation}
-|a\bm{I}_m+\epsilon \bm{L}\bm{L}^\intercal |=a^m|\bm{I}_n+\frac{\epsilon}{a} \bm{L}^\intercal \bm{L}|
+|a\bm{I}_m+\epsilon \bm{L}\bm{L}^{\textrm{T}} |=a^m|\bm{I}_n+\frac{\epsilon}{a} \bm{L}^{\textrm{T}} \bm{L}|
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -156,17 +166,17 @@ J=\left(
 考虑到
 \[
 \left(\begin{array}{cc}
-\bm{I}_n+\bm{L}^\intercal \bm{L}&\bm{0}\\
+\bm{I}_n+\bm{L}^{\textrm{T}} \bm{L}&\bm{0}\\
 \bm{L}&\bm{I}_m\\
 \end{array}\right)\sim\left(\begin{array}{cc}
-\bm{I}_n&-\bm{L}^\intercal \\
+\bm{I}_n&-\bm{L}^{\textrm{T}} \\
 \bm{L}&\bm{I}_m\\
 \end{array}\right)\sim\left(\begin{array}{cc}
-\bm{I}_n&-\bm{L}^\intercal \\
-0&\bm{I}_m+\bm{L}\bm{L}^\intercal \\
+\bm{I}_n&-\bm{L}^{\textrm{T}} \\
+0&\bm{I}_m+\bm{L}\bm{L}^{\textrm{T}} \\
 \end{array}\right)
 \]
-其中$\sim$表示矩阵相抵，两边取行列式即得$|\bm{I}_m+\bm{L}\bm{L}^\intercal |=|\bm{I}_n+\bm{L}^\intercal \bm{L}|$,证毕。
+其中$\sim$表示矩阵相抵，两边取行列式即得$|\bm{I}_m+\bm{L}\bm{L}^{\textrm{T}} |=|\bm{I}_n+\bm{L}^{\textrm{T}} \bm{L}|$,证毕。
 \end{proof}
 
 
@@ -183,16 +193,21 @@ $\bm{S}$是一个n-1维的方阵，\[
 $\lambda_j=2\cos(\frac{\pi j}{n}),j=1,2,...,n-1$
 \end{lemma}
 \begin{proof}
-首先可以用数学归纳法证明S的特征多项式有递推公式$P_n(\lambda)=\lambda P_{n-1}(\lambda)-P_{n-2}(\lambda)$
-,$P_n(\lambda)$对应n维的S。
+首先可以用数学归纳法证明S的特征多项式有递推公式:\[
+P_n(\lambda)=\lambda P_{n-1}(\lambda)-P_{n-2}(\lambda)
+\]
+$P_n(\lambda)$对应n维的S。
 其次证明
-$U_n(\lambda)=\frac{1}{\sqrt{1-(\frac{\lambda}{2})^2}}\sin((n+1)\arccos(\frac{\lambda}{2}))
-$
+\[
+U_n(\lambda)=\frac{1}{\sqrt{1-(\frac{\lambda}{2})^2}}\sin((n+1)\arccos(\frac{\lambda}{2}))
+\]
 适合上面的递推关系式。
 最后证明$U_n(\lambda)$是关于$\lambda$的多项式,而这只需要证明$U_1(\lambda),U_2(\lambda)$是多项式即可。
 \end{proof}
 
-$\bm{I}(\bm{p}_1,\dots,\bm{p}_N)$的特征多项式为$|(\lambda-a)\bm{I}-b\bm{L}\bm{L}^\intercal |$,
+$\bm{I}(\bm{p}_1,\dots,\bm{p}_N)$的特征多项式为\[
+p(\lambda)=|(\lambda-a)\bm{I}-b\bm{L}\bm{L}^{\textrm{T}} |
+\]
 其中L是2N乘以N的矩阵:
 \[
 L=\left(
@@ -205,11 +220,14 @@ L=\left(
 \end{array}
 \right)
 \]
-为获得该多项式的全部零点，我们进一步设$u_i=(1,0)^\intercal $，即目标节点作直线运动，后面可以看到直线运动对应着误差最小的情形。
-根据引理(\ref{lemma:change}),$|(\lambda-a)\bm{I}-bLL^\intercal |=(\lambda-a)^{2N}|\bm{I}_n-\frac{b}{\lambda-a}L^\intercal L|$,
-$L^\intercal L$是N阶方阵：
+为获得该多项式的全部零点，我们进一步设$u_i=(1,0)^{\textrm{T}} $，即目标节点作直线运动，后面可以看到直线运动对应着误差最小的情形。
+根据引理(\ref{lemma:change}),
 \[
-L^\intercal L=\left(
+|(\lambda-a)\bm{I}-bLL^{\textrm{T}} |=(\lambda-a)^{2N}|\bm{I}_n-\frac{b}{\lambda-a}L^{\textrm{T}} L|
+\]
+$L^{\textrm{T}} L$是N阶方阵：
+\[
+L^{\textrm{T}} L=\left(
 \begin{array}{ccccc}
 2&-1&\dots&&0\\
 -1&2&-1&\dots&0\\
@@ -219,14 +237,21 @@ L^\intercal L=\left(
 \end{array}
 \right)
 \]
-设$\bm{K}_{N-1}$为$L^\intercal L$第N-1阶主子式，则
-$|(\lambda-a)\bm{I}-bLL^\intercal |=(\lambda-a)^{N+1}|(\lambda-a)\bm{I}_{N-1}-b\bm{K}_{N-1}|$
+设$\bm{K}_{N-1}$为$L^{\textrm{T}} L$第N-1阶主子式，则
+\[
+|(\lambda-a)\bm{I}-bLL^{\textrm{T}} |=(\lambda-a)^{N+1}|(\lambda-a)\bm{I}_{N-1}-b\bm{K}_{N-1}|
+\]
 设$n:=N$,则$\bm{K}_{n-1}=2\bm{I}_{n-1}-\bm{S}$,由引理(\ref{lemma:special})可求出$\bm{I}(\bm{p}_1,\dots,\bm{p}_N)$的全部特征值。
 \[
 f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac{1}{a+2b(1-\cos(\frac{\pi j}{n}))}\right)
 \]
-当$n\to \infty$,根据Riemann积分的定义:$\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\int_0^1 \frac{1}{a+2b(1-cos(\pi x))}dx$
-化为复积分由留数定理可得$\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\frac{1}{\sqrt{a^2+4ab}}$
+当$n\to \infty$,根据Riemann积分的定义:
+\[
+\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\int_0^1 \frac{1}{a+2b(1-cos(\pi x))}dx
+\]
+化为复积分由留数定理可得\[
+\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\frac{1}{\sqrt{a^2+4ab}}
+\]
 
 直接从定义求解上面的问题较繁琐，下面用\textbf{Schur补}(Schur Complement)求解该问题:
 %EFIM的思路是说，如果我们只关心场景中单个移动节点的定位误差，则可以通过分块矩阵的思路对总体的FIM进行分解。
@@ -241,7 +266,8 @@ f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac
 {用Schur补求解节点平均定位误差}
 我们将用连分式的数学方法分析问题，在此之前给出一些关于连分式的基本结论\cite{ContinuedFraction}：
 \begin{definition}
-  有限序列$t_1,t_2,\dots,t_r$满足$t_j\geq 1$对于$j\geq2$可以递推地定义有限连分式$[t_1,t_2,\dots,t_r]:=t_1+\frac{1}{[t_2,\dots,t_r]}$
+  有限序列$t_1,t_2,\dots,t_r$满足$t_j\geq 1$对于$j\geq2$可以递推地定义有限连分式
+  \[[t_1,t_2,\dots,t_r]:=t_1+\frac{1} {[t_2,\dots,t_r]}\]
 \end{definition}
 \begin{theorem}\label{thm:basic}
   设$p_j=t_j p_{j-1}+p_{j-2},q_j=t_j q_{j-1}+q_{j-2}$,$M_j=\left(\begin{matrix}p_j&p_{j-1}\\q_j&q_{j-1}\end{matrix}\right)$
@@ -269,27 +295,27 @@ c之前的$t_i$对应着矩阵$T_i$的乘积矩阵看作分式线性变换F。�
 通过Schur补的公式可以推导出关于矩阵$(\lambda\bm{I}+\bm{J})$左上角的2乘2矩阵的Schur补一个特征值是$\lambda$，另一个特征值$T_1$可以用下面的递归方法得到
 \begin{equation}\label{eq:recursive_efim}
 \begin{split}
-T_{i-1}-\lambda & =\frac{1}{1+\frac{\sin^2\theta_i}{\lambda}+\frac{\cos^2\theta_i}{T_i}}:=M,2\leq i\leq N_a-1\\
+\underbrace{T_{i-1}-\lambda}_{M} & =\frac{1}{1+\frac{\sin^2\theta_i}{\lambda}+\frac{\cos^2\theta_i}{T_i}},2\leq i\leq N_a-1\\
 T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 \end{split}
 \end{equation}
-其中$\theta_i=\angle <\bm{p}_{t_i}-\bm{p}_{t_{i-1}},\bm{p}_{t_i}-\bm{p}_{t_{i+1}}>$。
+其中$\theta_i=\angle (\bm{p}_{t_i}-\bm{p}_{t_{i-1}},\bm{p}_{t_i}-\bm{p}_{t_{i+1}})$。
 %Ti should be described by symbol, not natural language.
 具体推导过程详见附录[\ref{B_F_1}]
 
 这个求解是针对目标节点的记时起点或终点而言的，如果针对其时间中点，则其可分别看成两段轨迹的起点和终点，
-其费舍尔信息矩阵为:$\bm{I}_p=\lambda I+M_1\bm{u}\bm{u}^\intercal +M_2\bm{v}\bm{v}^\intercal $
+其费舍尔信息矩阵为:$\bm{I}_p=\lambda I+M_1\bm{u}\bm{u}^{\textrm{T}} +M_2\bm{v}\bm{v}^{\textrm{T}} $
 其中$\bm{u},\bm{v}$是与目标位置$\bm{p}$直接相连的两个位置$\bm{p}_1,\bm{p}_2$与目标节点的方向向量。$M_1,M_2$满足递推公式(\ref{eq:recursive_efim})，
 但具体角度参数可能不一样，假设$N_a$是奇数使得时间中点存在于待测位置中，于是每个M算到$\frac{N_a+1}{2}$
 但如果我们考虑的是$N_a\to \infty$的情形，则不受终止位置的限制。
 $\bm{I}_p$的两个特征值为可由式(\ref{eq:Lambda})得出：
 \[
-\lambda+\frac{M_1+M_2\pm \sqrt{M_1^2+M_2^2+2M_1M_2\cos2\phi}}{2}
+\lambda_{1,2}=\lambda+\frac{M_1+M_2\pm \sqrt{M_1^2+M_2^2+2M_1M_2\cos2\phi}}{2}
 \]
 $\phi$为夹角$\angle(\bm{p}_1-\bm{p},\bm{p}_2-\bm{p})$,注意到时间中点时两个特征值均比$\lambda$大。
-我们先考虑所有$\bm{u}_i=(1,0)^\intercal $的特殊情形，此时一个特征值为$\lambda$，另一个特征值写成连分式为：
+我们先考虑所有$\bm{u}_i=(1,0)^{\textrm{T}} $的特殊情形，此时一个特征值为$\lambda$，另一个特征值写成连分式为：
 \begin{equation}\label{eq:gcf_1}
-\lambda+\cfrac{2}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}
+\lambda+\frac{2}{[1,\lambda,1,\lambda,\dots]}=\lambda+\cfrac{2}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}
 \end{equation}
 我们先求循环的部分的连分式的值K，然后代入$\lambda+2/K$中即可
 K对应的迭代矩阵循环周期为2，
@@ -297,10 +323,10 @@ K对应的迭代矩阵循环周期为2，
 解方程$x=\frac{(\lambda+1)x+1}{\lambda x+1}$并考虑到解$x>0$，得$K=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2\lambda}$，
 最后得时间中点所求的目标节点的误差下界为$\sqrt{\lambda^2+4\lambda}$。同理，将式\ref{eq:gcf_1}中分子2改为1求出对应于时间起点或终点
 误差下界为
-\begin{equation}\label{eq:starting_or_ending}
-M^*=\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}
-=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
-\end{equation}
+\begin{align}\notag\label{eq:starting_or_ending}
+M^*:&=[\lambda,1,\lambda,1,\dots]\\
+&=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
+\end{align}
 
 从时间间隔起始位置误差下界的一般表达式可以看出：
 \begin{enumerate}
@@ -328,7 +354,7 @@ M^*=\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}
 \begin{figure}
   \centering
   \includegraphics[width=400pt]{different_curve.eps}
-  \caption{$\lambda=2$时不同曲线随采样点加密趋近极限值的情况\\其中抛物轨迹对应的曲线是$(t,t^2)$,半圆轨迹是$(\cos(\pi t),\sin(\pi t))$}\label{figure:tend_to_limit}
+  \caption{$\lambda=2$时不同曲线随采样点加密趋近极限值的情况;其中抛物轨迹对应的曲线是$(t,t^2)$,半圆轨迹是$(\cos(\pi t),\sin(\pi t))$}\label{figure:tend_to_limit}
 \end{figure}
 %圆弧仿真
 由图\ref{figure:tend_to_limit}可见，
@@ -384,12 +410,12 @@ M^*=\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}
 \[\scriptsize{
 J=\left(
 \begin{array}{ccccc}
-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal &-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal &\bm{0}&\dots&\bm{0}\\
+\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\bm{0}&\dots&\bm{0}\\
 &&&&\\
--\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal &\lambda_{12}\bm{u}_{12}\bm{u}_{12}^\intercal +&-\lambda_{23}\bm{u}_{23}\bm{u}_{23}^\intercal &\dots&0\\
-&\lambda_{23}\bm{u}_{23}\bm{u}_{23}^\intercal &&&\\
+-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} +&-\lambda_{23}\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &\dots&0\\
+&\lambda_{23}\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &&&\\
 \vdots &\vdots&\ddots &\vdots&\vdots\\
-\bm{0}&\dots&\bm{0}&-\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal &\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^\intercal \\
+\bm{0}&\dots&\bm{0}&-\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} &\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} \\
 \end{array}
 \right)}
 \]
@@ -402,7 +428,7 @@ J=\left(
 具体推导过程可参考[\ref{B_F_3}]
 
 并且可以证明,减小诸$\theta$可以提高$T_1$即增大信息量，因此在线性网络中，当目标节点作直线运动时，确定其各个时刻的位置获得的信息量最大，因而精度最高。
-\section{正方形网络与正六边形网络平均定位误差求解}\label{section:square_and_hexagon_network}
+\section{正方形网络与正六边形网络}\label{section:square_and_hexagon_network}
 在协作定位网络的问题模型下，我们利用Schur补的数学工具，考虑大规模空间协作两种特殊的情形：
 正方形网络和正六边形网络。正六边形网络的每个内部节点周围有3个节点与之协作，且该内部节点位于周围三个节点构成的正三角形的重心上。
 为研究正六边形网络对定位性能的影响，我们考虑以一个节点$\bm{p}$为网络中心，我们称网络中某节点$\bm{p}_n$位于第n层链路上如果$\bm{p}_n$到$\bm{p}$的最短路径为n，图\ref{HexagonNetwork}就是一个只考虑前两层链路的正六边形网络。
@@ -422,18 +448,18 @@ J=\left(
 \begin{lemma}\label{lemma:hexagon}
   设$u$是模长为1的平面向量，那么有:
 \begin{equation}\label{eq:equiv}
-  u^\intercal ((\lambda+\frac{3}{2})I_2-\frac{1}{\lambda+\frac{3}{2}}(\frac{3}{2}I_2-uu^\intercal ))^{-1}u
+  u^{\textrm{T}} ((\lambda+\frac{3}{2})I_2-\frac{1}{\lambda+\frac{3}{2}}(\frac{3}{2}I_2-uu^{\textrm{T}} ))^{-1}u
   =((\lambda+\frac{3}{2})-\frac{1/2}{\lambda+\frac{3}{2}})^{-1}
 \end{equation}
 \end{lemma}
-  上面的引理能够把连分式中与$u$相关的项化为与$u$无关的项，由此推出度为3的协作网络中心节点SPEB为:
+  上面的引理能够把连分式中与$u$相关的项化为与$u$无关的项，由此推出度为3的协作网络中心节点SPEB满足:
   \[
-\lambda+\frac{3}{2}-\cfrac{3/2}{\lambda+\frac{3}{2}-\cfrac{1/2}{\lambda+3/2-\dots}}
+\frac{1}{\text{SPEB}}=\lambda+\frac{3}{2}-\cfrac{3/2}{\lambda+\frac{3}{2}-\cfrac{1/2}{\lambda+3/2-\dots}}
   \]
   注意到除了第一层的协作外，后面每层协作由于前一层的削弱系数由3/2变为1/2.
   用同样的方法可求出极限值为:
   \[
-  \sqrt{\lambda^2+3\lambda+\frac{1}{4}}-\frac{1}{\lambda+\frac{3}{2}+\sqrt{\lambda^2+3\lambda+\frac{1}{4}}}
+  \lambda+\frac{3}{2}-\cfrac{3/2}{\lambda+\frac{3}{2}-\cfrac{1/2}{\lambda+3/2-\dots}}=\sqrt{\lambda^2+3\lambda+\frac{1}{4}}-\frac{1}{\lambda+\frac{3}{2}+\sqrt{\lambda^2+3\lambda+\frac{1}{4}}}
   \]
   取倒数即为某方向的误差下界，由于网络的各向同性，x方向和y方向的误差下界都是这个数。
 该误差下界总是比正方形网格x或y方向的误差大。

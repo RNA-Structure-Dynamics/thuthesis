@@ -1,4 +1,4 @@
-\chapter{问题的数学模型}\label{cha:model}
+\chapter{数学模型}\label{cha:model}
 \section[非协作定位场景]{非协作定位场景}\label{section:noncooperative_localization}
 
 {单个节点定位}
@@ -29,7 +29,7 @@ f(x_1,...x_{N_b}|\textbf{p})=\prod_{i=1}^{N_b}\frac{1}{\sqrt{2\pi\sigma_i^2}}exp
 
 对于我们的模型问题，费舍尔信息矩阵有如下的形式：
 \begin{equation}\label{eq:uu}
-I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^\intercal
+I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^{\textrm{T}}
 \end{equation}
 其中
 \begin{equation}
@@ -51,7 +51,7 @@ I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^\int
 以$N_a$个未知节点的位置$\{p_i\}$作为待估计的参数，可以得到测距量的联合概率密度函数为
 
 \begin{equation}
-\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})\prod_{(i,j)\in \mathcal{E}}\frac{1}{\sqrt{2\pi\sigma_{ij}^2}}exp\left(-\frac{(x_{ij}-||\bm{p}_i-\bm{p}_j||)^2}{2\sigma_{ij}^2}\right)
+F(\bm{X}|\bm{P})=\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})\prod_{(i,j)\in \mathcal{E}}\frac{1}{\sqrt{2\pi\sigma_{ij}^2}}exp\left(-\frac{(x_{ij}-||\bm{p}_i-\bm{p}_j||)^2}{2\sigma_{ij}^2}\right)
 \end{equation}
 上式中f的具体表达式为式(\ref{eq:single}),$\mathcal{E}$表示可以彼此测距的未知节点的二元组的集合，而$x_t^i$表示第t个锚点和第i个未知节点的距离测量量。
 
@@ -78,7 +78,7 @@ I(\bm{p}_1)+&-\bm{C}_{1,2}&...&-\bm{C}_{1,N_a}\\
 \right)
 }
 \end{equation}
-上面的式子中$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,j}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^\intercal /\sigma^2_{ij}$,表示未知节点i和j协作的矩阵。
+上面的式子中$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,j}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^{\textrm{T}} /\sigma^2_{ij}$,表示未知节点i和j协作的矩阵。
 $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i和j的方向向量。
 \section[时间协作定位]{时间协作定位}\label{section:temporal_cooperative_localization}
 
@@ -93,7 +93,7 @@ $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i
 假设测量时间间隔比较小使得相邻测量间节点速度方向可近似看作不变，速度测量值服从均值为$v$，方差为$\sigma_{v}$的正态分布$V_{ij}$。
 那么以节点各时刻的的位置$\{p_i\}$作为待估计的参数，可以得到包括相邻时刻间的所有测距量的联合概率密度函数为
 \begin{equation}
-\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
+F(\bm{X}|\bm{P})=\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
 \prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_v(t_{i+1}-t_i)}
 exp\left(-\frac{(v_{i,i+1}(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_v^2(t_{i+1}-t_i)^2}\right)
 \end{equation}
@@ -114,7 +114,7 @@ I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
 \right)
 }
 \end{equation}
-上面的式子中若将2乘2的矩阵看作单位元素，则是一个三对角的矩阵。$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,i+1}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^\intercal /(\sigma_v^2(t_{i+1}-t_i)^2)$,表示未知节点i和j协作的矩阵，$\bm{u}_{ij}$表示未知节点i和j的方向向量。
+上面的式子中若将2乘2的矩阵看作单位元素，则是一个三对角的矩阵。$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,i+1}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^{\textrm{T}} /(\sigma_v^2(t_{i+1}-t_i)^2)$,表示未知节点i和j协作的矩阵，$\bm{u}_{ij}$表示未知节点i和j的方向向量。
 
 我们可以将第二个模型问题与线性网络单节点时间协作建立联系，只需对上面概率密度函数中出现的符号重排即可：
 将两移动节点在$t_1$时刻的协作的边作为链路的中心，该链路记为$l$,左右各有$N_a$个节点，分别表示各节点$t_i$时刻的位置。
@@ -128,10 +128,10 @@ I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
 \begin{equation}
 \scriptsize{
 \begin{split}
-&\frac{1}{\sqrt{2\pi\sigma^2}}exp\left(-\frac{(x-||\bm{p}_1-\bm{q}_1)^2}{2\sigma^2}\right)\prod_{i=1}^{N_a}
+&F(\bm{X}|\bm{P})=\frac{1}{\sqrt{2\pi\sigma^2}}exp\left(-\frac{(x-||\bm{p}_1-\bm{q}_1)^2}{2\sigma^2}\right)\prod_{i=1}^{N_a}
 f(x^i_1,...x^{i}_{N_b}|\bm{p_i})
-\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{q_i})
-\prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_i(t_{i+1}-t_i)}\\
+\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{q_i})\\
+\prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma_i(t_{i+1}-t_i)}
 &exp\left(-\frac{(v_i(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_i^2(t_{i+1}-t_i)^2}\right)
 \prod_{i=1}^{N_a-1}\frac{1}{\sqrt{2\pi}\sigma'_i(t_{i+1}-t_i)}
 exp\left(-\frac{(v'_i(t_{i+1}-t_i)-||\bm{q}_i-\bm{q}_{i+1}||)^2}{2\sigma^{'2}_i(t_{i+1}-t_i)^2}\right)
