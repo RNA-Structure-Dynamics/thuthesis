@@ -57,10 +57,9 @@ F(\bm{X}|\bm{P})=\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})\prod_{(i,j)\
 
 \textbf{费舍尔信息矩阵}
 
-仿照单节点时费舍尔信息矩阵的推导，关于$2N_a$个参数$\{p_i^a\}$的费舍尔信息矩阵$I(\bm{p}_1,\dots,\bm{p}_{N_a})$有如下的表达形式：
+仿照单节点时费舍尔信息矩阵的推导，关于$2N_a$个参数$\{p_i^a\}$的费舍尔信息矩阵$\bm{I}(\bm{P})$有如下的表达形式：
 \begin{equation}
-\scriptsize{
-I(\bm{p}_1,\dots,\bm{p}_{N_a})=
+\bm{I}(\bm{P})=
 \left(
 \begin{array}{cccc}
 I(\bm{p}_1)+&-\bm{C}_{1,2}&...&-\bm{C}_{1,N_a}\\
@@ -76,7 +75,6 @@ I(\bm{p}_1)+&-\bm{C}_{1,2}&...&-\bm{C}_{1,N_a}\\
 -\bm{C}_{1,N_a}&-\bm{C}_{2,N_a}&...& \sum_{j\in \{1,..N_a\}\backslash\{N_a\}}\bm{C}_{N_a,j}\\
 \end{array}
 \right)
-}
 \end{equation}
 上面的式子中$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,j}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^{\textrm{T}} /\sigma^2_{ij}$,表示未知节点i和j协作的矩阵。
 $\bm{u}_{ij}=\frac{\bm{p}_i-\bm{p}_j}{||\bm{p}_i-\bm{p}_j||}$表示未知节点i和j的方向向量。
@@ -100,8 +98,7 @@ exp\left(-\frac{(v_{i,i+1}(t_{i+1}-t_i)-||\bm{p}_i-\bm{p}_{i+1}||)^2}{2\sigma_v^
 {费舍尔信息矩阵}
 关于$2N_a$个参数$\{p_i\}$的费舍尔信息矩阵有如下的表达形式：
 \begin{equation}\label{eq:time_cooperation_matrix}
-\scriptsize{
-I(\bm{p}_1,\dots,\bm{p}_{N_a})=
+\bm{I}(\bm{P})=
 \left(
 \begin{array}{ccccc}
 I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
@@ -112,7 +109,6 @@ I(\bm{p}_1)+\bm{C}_{1,2}&-\bm{C}_{1,2}&\bm{0}&\dots&\bm{0}\\
 \bm{0}&\bm{0}&...& -\bm{C}_{N_a-1,N_a}&\bm{C}_{N_a-1,N_a}+I(\bm{p}_{N_a})\\
 \end{array}
 \right)
-}
 \end{equation}
 上面的式子中若将2乘2的矩阵看作单位元素，则是一个三对角的矩阵。$I(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,i+1}=\bm{1}_{(i,j)\in E}\bm{u}_{ij}\bm{u}_{ij}^{\textrm{T}} /(\sigma_v^2(t_{i+1}-t_i)^2)$,表示未知节点i和j协作的矩阵，$\bm{u}_{ij}$表示未知节点i和j的方向向量。
 

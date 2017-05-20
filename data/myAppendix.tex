@@ -1,5 +1,5 @@
-\chapter{外文资料的调研阅读报告或书面翻译}
-\includepdf[pages=-]{translation.pdf}
+%\chapter{外文资料的调研阅读报告或书面翻译}
+%\includepdf[pages=-]{translation.pdf}
 \chapter{公式的推导}
 \section{建模过程的一些推导过程}
 \subsection{定位问题中费舍尔信息矩阵一般结构推导}\label{A_F_1}
@@ -48,30 +48,31 @@ k=\frac{1}{a_1}+\sin^2 \theta(\frac{1}{a_2}-\frac{1}{a_1})
 因为$a_1\geq a_2$所以在$\sin^2(\theta)\in[0,1]$的区间内结论成立。
 同理可证明条件$\frac{1}{a_3}+\frac{1}{a_4}\geq \max\{\frac{1}{a_1},\frac{1}{a_2}\}$是保证固定$\theta$的情况下SPEB关于$\phi \in [0,\frac{\pi}{2}]$是单调递减的。
 \subsection{单节点动态定位问题等效费舍尔信息矩阵推导}\label{B_F_1}
-为简化符号，记$\bm{u}:=\bm{u}_{12}$,2阶单位阵记为$\bm{I}_2$,由等效费舍尔信息矩阵的定义，有
-\begin{equation}\label{eq:initial_efim}
-  K_1=\lambda \bm{I}_2+\bm{u}\bm{u}^T-\bm{u}\bm{u}^T K_2^{-1}\bm{u}\bm{u}^T
-  =\lambda \bm{I}_2+(1-\bm{u}^T K_2^{-1}\bm{u})\bm{u}\bm{u}^T
-\end{equation}
+为简化符号，记$\bm{u}:=\bm{u}_{N_a-1}$,2阶单位阵记为$\bm{I}_2$,由等效费舍尔信息矩阵的定义，有
+\begin{align}\notag\label{eq:initial_efim}
+  U_{N_a}=&\lambda \bm{I}_2+\bm{u}\bm{u}^T-\bm{u}\bm{u}^T U_{N_a-1}^{-1}\bm{u}\bm{u}^T\\
+  =&\lambda \bm{I}_2+(1-\bm{u}^T U_{N_a-1}^{-1}\bm{u})\bm{u}\bm{u}^T
+\end{align}
 因为$\bm{u}\bm{u}^T=U\begin{pmatrix}
                      1 & 0 \\
                      0 & 0
                    \end{pmatrix}U^{-1}$，其中$U$是由$\bm{u}$的方向角确定的二维旋转矩阵，所以
-$K_1$相似于$\begin{pmatrix}
-                           \lambda+1-\bm{u}^T K_2^{-1}\bm{u} & 0 \\
-                           0 & \lambda
-                         \end{pmatrix}$
-而$T_1=\lambda+1-\bm{u}^T K_2^{-1}\bm{u}$下面化简$1-\bm{u}^T K_2^{-1}\bm{u}$注意到$K_2=\bm{u}\bm{u}^T+J_2$,$J_2$是不考虑前(i-1)个时刻节点位置写出的等效费舍尔信息矩阵，所以
+$U_{N_a}$相似于下面的矩阵
 \[
-1-\bm{u}^T (\bm{u}\bm{u}^T+J_2)^{-1}\bm{u}
+U_{N_a}\sim \begin{pmatrix}
+                           \lambda+1-\bm{u}^T U_{N_a-1}^{-1}\bm{u} & 0 \\
+                           0 & \lambda
+                         \end{pmatrix}
 \]
+                         
+我们定义$T_i=\lambda+1-\bm{u}^T U_{N_a-i}^{-1}\bm{u}$并设$U_{N_a-1}=\bm{u}\bm{u}^T+J_2$
 由式(\ref{eq:woodbury})可得
-\begin{equation}
-1-\bm{u}^T (\bm{u}\bm{u}^T+J_2)^{-1}\bm{u}
-=(1+\bm{u}^T J_2^{-1}\bm{u})^{-1}
-\end{equation}
-进一步设$v:=\bm{u}_{23}$,则$J_2=\lambda \bm{I}_2+(1-\bm{v}^T K_3^{-1}\bm{v})\bm{v}\bm{v}^T=V\begin{pmatrix}
-                     \lambda+1-\bm{v}^T K_3^{-1}\bm{v} & 0 \\
+\begin{align}\notag
+T_1=&\lambda+1-\bm{u}^T (\bm{u}\bm{u}^T+J_2)^{-1}\bm{u}\\
+=&\lambda+(1+\bm{u}^T J_2^{-1}\bm{u})^{-1}
+\end{align}
+进一步设$v:=\bm{u}_{N_a-2}$,则$J_2=\lambda \bm{I}_2+(1-\bm{v}^T U_{N_a-2}^{-1}\bm{v})\bm{v}\bm{v}^T=V\begin{pmatrix}
+                     \lambda+1-\bm{v}^T U_{N_a-2}^{-1}\bm{v} & 0 \\
                      0 & \lambda
                    \end{pmatrix}V^{-1}$
 设$\bm{u}=(\cos\phi_1,\sin\phi_1)^T,\bm{v}=(\cos\phi_2,\sin\phi_2)^T$,则
@@ -82,16 +83,19 @@ V^{-1}\bm{u}=\begin{pmatrix}
                    \end{pmatrix}\binom{\cos\phi_1}{\sin\phi_1}=\binom{\cos(\phi_1-\phi_2)}{\sin(\phi_1-\phi_2)}=:w
 \]
 所以
-\[
-1-\bm{u}^T (\bm{u}\bm{u}^T+J_2)^{-1}\bm{u}=(1+\bm{w}^T \begin{pmatrix}
-                     \lambda+1-\bm{v}^T K_3^{-1}\bm{v} & 0 \\
+\begin{align*}
+T_1=&\lambda+(1+\bm{w}^T \begin{pmatrix}
+                     \lambda+1-\bm{v}^T U_{N_a-2}^{-1}\bm{v} & 0 \\
                      0 & \lambda
-                   \end{pmatrix}^{-1}\bm{w})^{-1}
-                   =\frac{1}{1+\frac{\cos^2(\phi_1-\phi_2)}{T_2}+\frac{\sin^2(\phi_1-\phi_2)}{\lambda}}
-\]
+                   \end{pmatrix}^{-1}\bm{w})^{-1}\\
+                   =&\frac{1}{1+\frac{\cos^2(\phi_1-\phi_2)}{T_2}+\frac{\sin^2(\phi_1-\phi_2)}{\lambda}}
+\end{align*}
 递推可得一般形式。
-终止条件：当计算到原费舍尔信息矩阵的右下角时$T_{N_a-1}=\lambda$,
-所以对$N_a$维矩阵，协作方向有$N_a-1$,而得到的有限连分式数列也恰有$N_a-1$项。
+终止条件：
+\begin{align*}
+T_{N_a-1}&=\lambda+1-\bm{u}_1^T(\lambda\bm{I}+\bm{u}_1\bm{u}_1^T)^{-1}\bm{u}_1\\
+&=\lambda+\frac{1}{\lambda+\frac{1}{\lambda}}
+\end{align*}
 \subsection{定理\ref{theorem:arbitrary_curve}的证明}\label{B_F_6}
 式(\ref{eq:starting_or_ending})给出了式(\ref{eq:limiting_cf})右端是$\bm{p}(t)$为直线的情形。由于对于任意的平面曲线和角度序列$\{\theta_i\}$,$T_1(N_a)$是关于$N_a$的增函数且小于$\lambda+1$，因此式(\ref{eq:limiting_cf})左端的极限总是存在的。
 考虑由$\bm{p}(t)$确定的角度序列$\{\theta_i\}$以如下的方式趋近于直线对应的直线序列:
@@ -145,8 +149,10 @@ K_r-K_{r+1}\leq \sin^2 (c\Delta t) \frac{1}{\lambda}\frac{1}{(\lambda+1)^{2r}}
 无穷级数$\sum_{i=1}^{\infty}\frac{1}{(\lambda+1)^{2i}}$收敛，所以当$\Delta t\to 0$时$N_a\to \infty$,式(\ref{eq:equivalent_limiting_cf})成立。
 
 \subsection{单节点动态定位问题等效费舍尔信息衰减上下界}\label{B_F_2}
-考虑在原有基础上增加一层节点，即利用上距离时间中点前后更远的两个时刻的位置，由对称性我们只需考虑单边，
-于是协作层数由原来的$N_a-1$变为$N_a$,等效费舍尔信息矩阵较大的特征值分别记为$T_1,T'_1$,为便于比较，我们在$T_1$中引入虚拟节点将其层数也拓展为$N_a$,它只有锚点的定位信息，这样它们的区别是连分式的末端$T_{N_a}=\lambda$,$T'_{N_a}=\lambda+\frac{1}{1+1/\lambda}$
+为记号简便记$T'_1=T_1(N_a+1),T_1=T_1(N_a)$
+%考虑在原有基础上增加一层节点，
+%于是协作层数由原来的$N_a-1$变为$N_a$。等效费舍尔信息矩阵较大的特征值分别记为$T_1,T'_1$,
+为便于比较，我们在$T_1$中引入虚拟节点将其层数也拓展为$N_a$,它只有锚点的定位信息，这样它们的区别是连分式的末端$T_{N_a}=\lambda$,$T'_{N_a}=\lambda+\frac{1}{1+1/\lambda}$
 对$|T_1-T'_1|$从外向里通分得:
 \[
 |T_1-T'_1|=\frac{\cos^2\theta_1|\frac{1}{T_2}-\frac{1}{T'_2}|}{(1+\frac{\sin^2\theta_1}{\lambda}+\frac{\cos^2\theta_1}{T_2})
@@ -173,33 +179,34 @@ K_r-K_{r+1}\leq \sin^2 (c\Delta t) \frac{1}{\lambda}\frac{1}{(\lambda+1)^{2r}}
 |\frac{1}{T_2}-\frac{1}{T'_2}|\geq \frac{\cos^2\Delta\theta|\frac{1}{T_3}-\frac{1}{T'_3}|}{(2+\lambda)^2}
 \]
 逐次递推得下界。
-\subsection{推论\ref{corollary:exponential_decreasing}的证明}\label{B_F_5}
-由定理\ref{theorem:exponential_decreasing}的结论:
-\[
-T_{N_a}=\sum_{k=1}^{N_a-1}\Delta_{+}T_k
-\]
-因此当$N_a\geq 2$时
-\[
-|T_{N_a}-T_{\infty}|=\sum_{k=N_a}^{\infty}\Delta_{+}T_k\leq \frac{1}{\lambda^2+2\lambda}\sum_{k=N_a}^{\infty}\frac{1}{(\lambda+1)^{2(k-2)}}=\frac{1}{(\lambda^2+2\lambda)^2}\frac{1}{(\lambda+1)^{2(N_a-3)}}
-\]
-取$q=(\lambda+1)^2$，其余常数为C即可。
+%\subsection{推论\ref{corollary:exponential_decreasing}的证明}\label{B_F_5}
+%由定理\ref{theorem:exponential_decreasing}的结论:
+%\[
+%T_{N_a}=\sum_{k=1}^{N_a-1}\Delta_{+}T_k
+%\]
+%因此当$N_a\geq 2$时
+%\[
+%|T_{N_a}-T_{\infty}|=\sum_{k=N_a}^{\infty}\Delta_{+}T_k\leq %\frac{1}{\lambda^2+2\lambda}\sum_{k=N_a}^{\infty}\frac{1}{(\lambda+1)^{2(k-2)}}=\frac{1}{(\lambda^2+2\lambda)^2}\frac{1}{(\lambda+1)^{2(N_a-3)}}
+%\]
+%取$q=(\lambda+1)^2$，其余常数为C即可。
 \subsection{单节点非均一测距误差等效费舍尔信息矩阵推导}\label{B_F_3}
 类似式(\ref{eq:initial_efim})有:
 \[
-K_1=\bm{I}+(\lambda_1-\lambda_1^2 \bm{u}^T K_2^{-1}\bm{u})\bm{u}\bm{u}^T
+U_{N_a}=\bm{I}+(\lambda_1-\lambda_1^2 \bm{u}^T U_{N_a-1}^{-1}\bm{u})\bm{u}\bm{u}^T
 \]
 而
 \[
-T_1=1+\lambda_1-\lambda_1^2 \bm{u}^T K_2^{-1}\bm{u}=1+(\lambda_1^{-1}+\bm{u}^T\bm{J}_2^{-1}\bm{u})^{-1}
+T_1=1+\lambda_1-\lambda_1^2 \bm{u}^T U_{N_a-1}^{-1}\bm{u}=1+(\lambda_1^{-1}+\bm{u}^T\bm{J}_2^{-1}\bm{u})^{-1}
 \]
-对$J_2=\bm{I}_2+(\lambda_2-\lambda_2^2\bm{v}^T K_3^{-1}\bm{v})\bm{v}\bm{v}^T$提取关于$\bm{v}$的旋转矩阵即得到
+对$J_2=\bm{I}_2+(\lambda_2-\lambda_2^2\bm{v}^T U_{N_a-2}^{-1}\bm{v})\bm{v}\bm{v}^T$提取关于$\bm{v}$的旋转矩阵即得到
 式(\ref{eq:recursive_efim_second})。
 另外从式(\ref{eq:recursive_efim_second})出发，设$\theta'_1\leq \theta_1$,作差:
 \[
 \text{denominator}~(T_1(\theta'_1)-T_1(\theta_1))=(\cos^2\theta'_1-\cos^2\theta_1)(1-\frac{1}{T_2})\geq 0
 \]
-即角度$\theta_1$越小$T_1$越大，同理$\theta_i$越小$T_i$越大，而由连分式的表达式可以看出$T_1$关于$T_2$递增，连分式本身具有自相似性，
+即角度$\theta_1$越小$T_1$越大，同理$\theta_i$越小$T_i$越大，而由连分式的表达式可以看出$T_1$关于$T_2$递增，而连分式本身具有自相似性，
 因此诸$\theta_i$减小可以增大信息量$T_1$。
+
 \subsection{引理~\ref{lemma:hexagon}的推导}\label{B_F_4}
   设式(\ref{eq:equiv})左边为B,$A=\lambda+\frac{3}{2}$,那么由Woodbury矩阵求逆公式有
   \[
@@ -210,3 +217,30 @@ T_1=1+\lambda_1-\lambda_1^2 \bm{u}^T K_2^{-1}\bm{u}=1+(\lambda_1^{-1}+\bm{u}^T\b
   B=A-\frac{A^2}{A+\frac{1}{\lambda+3/2-\frac{3/2}{\lambda+3/2}}}
   \]
   通分化简得证。
+\section{本文中用到的关于连分式的结论}\label{C_F}
+\begin{definition}
+  有限序列$t_1,t_2,\dots,t_r$满足$t_j\geq 1$对于$j\geq2$可以递推地定义有限连分式
+  \[[t_1,t_2,\dots,t_r]:=t_1+\frac{1} {[t_2,\dots,t_r]}\]
+\end{definition}
+\begin{theorem}\label{thm:basic}
+  设$p_j=t_j p_{j-1}+p_{j-2},q_j=t_j q_{j-1}+q_{j-2}$,$M_j=\left(\begin{matrix}p_j&p_{j-1}\\q_j&q_{j-1}\end{matrix}\right)$
+  $p_0,p_1,q_0,q_1$由$M_0=I_2$给出,且$T_j=\left(\begin{matrix}t_j&1\\1&0\end{matrix}\right)$则有下面三个恒等式:
+  \begin{enumerate}
+    \item $M_j=M_{j-1}T_j$
+    \item $\binom{p_j}{q_j}=(\prod_{i=1}^r T_i )\binom{1}{0}$
+    \item $[t_1,t_2,\dots,t_r]=\frac{p_r}{q_r}$
+  \end{enumerate}
+\end{theorem}
+\begin{theorem}\label{theorem:quadratic_cyclic}
+若$\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$存在，该极限是形如$\frac{a+b\sqrt{m}}{c}$的二次根式当且仅当序列$t_i$从某项开始是周期的，即$\exists c,r,\,s.t.\, t_{i}=t_{i+r},\forall i\geq c$。
+\end{theorem}
+\begin{remark}
+对于定理\ref{theorem:quadratic_cyclic},设$\left(\begin{matrix}a&b\\c&d\end{matrix}\right)=(\prod_{i=1}^{rc} T_{i+c})$，称$\left(\begin{matrix}a&b\\c&d\end{matrix}\right)$对应着分式线性变换K,如果$K(z)=\frac{az+b}{cz+d}$。
+可以证明系数为实数的分式线性变换以函数复合作为群运算与行列式为1的2阶方阵以矩阵乘积作为群运算是同构的。
+c之前的$t_i$对应着矩阵$T_i$的乘积矩阵看作分式线性变换F。可以进一步说明二次根式和T和F的有如下的关系:
+\begin{enumerate}
+  \item 首先求解$K$的不动点即解二次方程$x=\frac{ax+b}{cx+d}$得x
+  \item $F(x)=\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$,F(x)即为极限$\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$
+\end{enumerate}
+一般二次方程有两个根，而有限连分式的极限值是唯一的，这时可根据极限值介于序列的前两个数之间剔除一个不合理的不动点。
+\end{remark}

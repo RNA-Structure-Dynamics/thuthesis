@@ -7,7 +7,7 @@
 \item 未知节点彼此测距方差$\sigma^2_{ij}=\frac{1}{b}$
 \item $\mathcal{E}=\{(i,j)|1\leq i <j\leq N\},N:=N_a,\angle\bm{u}_j=\frac{2\pi j}{n}$
 \end{enumerate}
-$I(\bm{p}_1,\dots,\bm{p}_N)$的最大特征值和最小特征值可由\textbf{瑞利商}求出，关于瑞利商有如下定理:
+$\bm{I}(\bm{P})$的最大特征值和最小特征值可由\textbf{瑞利商}求出，关于瑞利商有如下定理:
 \begin{theorem}\label{theorem:rayleigh}
   设$\bm{A}$是一个对称正定的矩阵，设$\bm{v}_{\lambda}$为A的特征值$\lambda$对应的特征向量，则:
 \begin{align*}
@@ -129,7 +129,7 @@ M\sum_{i=1}^N||\sum_{j=1,j\neq i}^N(\bm{p}_1-\bm{p}_j)||^2=1
 
 \end{remark}
 \section{线型网络}\label{section:linear_network}
-在动态协作定位网络的问题模型下，得到的费舍尔信息矩阵是三对角矩阵，在时间段[0,T]内，为研究减小时间间隔对定位性能的提高，我们需要对原来的模型作出如下的简化:
+在动态协作定位网络的问题模型下，得到的费舍尔信息矩阵是块三对角矩阵，在时间段[0,T]内，为研究减小时间间隔对定位性能的提高，我们需要对原来的模型作出如下的简化:
 \begin{itemize}
 \item 锚点测距方差$\sigma_i^2=\frac{1}{a}$
 \item 未知节点彼此测距方差$\sigma^2_{ij}=\frac{1}{b}$
@@ -141,17 +141,16 @@ I(\bm{P})=a\bm{I}+b\bm{J}
 其中\[
 J=\left(
 \begin{array}{ccccc}
-\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &-\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\bm{0}&\dots&\bm{0}\\
+\bm{u}_{1}\bm{u}_{1}^{\textrm{T}} &-\bm{u}_{1}\bm{u}_{1}^{\textrm{T}} &\bm{0}&\dots&\bm{0}\\
 &&&&\\
--\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} +\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &-\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &\dots&0\\
+-\bm{u}_{1}\bm{u}_{1}^{\textrm{T}} &\bm{u}_{1}\bm{u}_{1}^{\textrm{T}} +\bm{u}_{2}\bm{u}_{2}^{\textrm{T}} &-\bm{u}_{2}\bm{u}_{2}^{\textrm{T}} &\dots&0\\
 &&&&\\
 \vdots &\vdots&\ddots &\vdots&\vdots\\
-\bm{0}&\dots&\bm{0}&-\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} &\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} \\
+\bm{0}&\dots&\bm{0}&-\bm{u}_{N-1}\bm{u}_{N-1}^{\textrm{T}} &\bm{u}_{N-1}\bm{u}_{N-1}^{\textrm{T}} \\
 \end{array}
 \right)
 \]
-其中$K_1=\text{diag}\{1,0\}$，$Q=\text{diag}\{R_{\theta},...R_{\theta}\}$,$R_{\theta}$为二维旋转矩阵
-求$\lim_{N\to \infty}\frac{\Tr(J^{-1})}{N}$
+其中$u_i:=u_{i,i+1}$求$\lim_{N\to \infty}\frac{\Tr(J^{-1})}{N}$
 
 
 直接求解该问题需要如下两个引理:
@@ -249,93 +248,134 @@ f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac
 \[
 \lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\int_0^1 \frac{1}{a+2b(1-cos(\pi x))}dx
 \]
-化为复积分由留数定理可得\[
+化为复积分由留数定理可得
+\begin{equation}\label{eq:a24ab}
 \lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\frac{1}{\sqrt{a^2+4ab}}
-\]
+\end{equation}
 
-直接从定义求解上面的问题较繁琐，下面用\textbf{Schur补}(Schur Complement)求解该问题:
+解析求解$\bm{I}(\bm{P})$的全部特征值在$\bm{u}_i$不共线时非常困难，在数值代数中针对三对角矩阵有追赶法(Thomas algorithm)来快速求解$A^{-1}b$\cite{numericalAnalysis}，下面我们会推广这一方法使之适用于我们研究中的块三对角矩阵$\bm{I}(\bm{P})$。
 %EFIM的思路是说，如果我们只关心场景中单个移动节点的定位误差，则可以通过分块矩阵的思路对总体的FIM进行分解。
+首先注意到式(\ref{eq:Pab})中$a\bm{I}+b\bm{J}$可以提取b(相当于对b作归一化),记$\lambda=\frac{a}{b}$，下面我们针对$\lambda \bm{I}+\bm{J}$进行研究。
 
-\begin{definition}
-    设矩阵$I=\left(\begin{array}{cc}A&B\\C&D\end{array}\right)$,那么矩阵$I$关于D的Schur补定义为$
-    I/\ D=A-BD^{-1}C$,若$I^{-1}$与I作同样的分块，则$(I/\ D)^{-1}$是$I^{-1}$左上角的分块矩阵。
-\end{definition}
-\begin{remark}
-	在我们的应用场景中，矩阵$I$是费舍尔信息矩阵，可以证明$(I/\ D)$给出于参数空间$\Theta$的子空间的费舍尔信息矩阵，计算$\text{tr}(I^{-1})$可以分解为计算各个子空间的误差再求和，一般取子空间的大小为2维，对应着一个位置的XY坐标。$I/\ D$在我们的应用场景中也称为等效费舍尔信息矩阵(Equivalent Fisher Information Matrix)。
-\end{remark}
-{用Schur补求解节点平均定位误差}
-我们将用连分式的数学方法分析问题，在此之前给出一些关于连分式的基本结论\cite{ContinuedFraction}：
-\begin{definition}
-  有限序列$t_1,t_2,\dots,t_r$满足$t_j\geq 1$对于$j\geq2$可以递推地定义有限连分式
-  \[[t_1,t_2,\dots,t_r]:=t_1+\frac{1} {[t_2,\dots,t_r]}\]
-\end{definition}
-\begin{theorem}\label{thm:basic}
-  设$p_j=t_j p_{j-1}+p_{j-2},q_j=t_j q_{j-1}+q_{j-2}$,$M_j=\left(\begin{matrix}p_j&p_{j-1}\\q_j&q_{j-1}\end{matrix}\right)$
-  $p_0,p_1,q_0,q_1$由$M_0=I_2$给出,且$T_j=\left(\begin{matrix}t_j&1\\1&0\end{matrix}\right)$则有下面三个恒等式:
-  \begin{enumerate}
-    \item $M_j=M_{j-1}T_j$
-    \item $\binom{p_j}{q_j}=(\prod_{i=1}^r T_i )\binom{1}{0}$
-    \item $[t_1,t_2,\dots,t_r]=\frac{p_r}{q_r}$
-  \end{enumerate}
-\end{theorem}
-\begin{theorem}\label{theorem:quadratic_cyclic}
-若$\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$存在，该极限是形如$\frac{a+b\sqrt{m}}{c}$的二次根式当且仅当序列$t_i$从某项开始是周期的，即$\exists c,rc,\,s.t.\, t_{i}=t_{i+r},\forall i\geq c$。
-\end{theorem}
-\begin{remark}
-对于定理\ref{theorem:quadratic_cyclic},设$\left(\begin{matrix}a&b\\c&d\end{matrix}\right)=(\prod_{i=1}^{rc} T_{i+c})$，称$\left(\begin{matrix}a&b\\c&d\end{matrix}\right)$对应着分式线性变换K,如果$K(z)=\frac{az+b}{cz+d}$。
-可以证明系数为实数的分式线性变换以函数复合作为群运算与行列式为1的2阶方阵以矩阵乘积作为群运算是同构的。
-c之前的$t_i$对应着矩阵$T_i$的乘积矩阵看作分式线性变换F。可以进一步说明二次根式和T和F的有如下的关系:
-\begin{enumerate}
-  \item 首先求解$K$的不动点即解二次方程$x=\frac{ax+b}{cx+d}$得x
-  \item $F(x)=\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$,F(x)即为极限$\lim_{r\to \infty}[t_1,t_2,\dots,t_r]$
-\end{enumerate}
-一般二次方程有两个根，而有限连分式的极限值是唯一的，这时可根据极限值介于序列的前两个数之间剔除一个不合理的不动点。
-\end{remark}
-应用连分式的基本理论，我们对式\ref{eq:Pab}中$a\bm{I}+b\bm{J}$提取b,记$\lambda=\frac{a}{b}$
-通过Schur补的公式可以推导出关于矩阵$(\lambda\bm{I}+\bm{J})$左上角的2乘2矩阵的Schur补一个特征值是$\lambda$，另一个特征值$T_1$可以用下面的递归方法得到
+记$\bm{e}_i=(\bm{0},\dots,\underbrace{\bm{I}_2}_{\text{i-th item}},\dots,\bm{0})^T$在式(\ref{eq:SPEB_formula})中SPEB可以分解为各节点的定位误差下界之和为:
+\begin{equation}\label{eq:SPEB_every_node}
+  \text{SPEB}=\sum_{i=1}^{N_a} \bm{e}_i^T(\bm{I}(\bm{P}))^{-1}\bm{e}_i
+\end{equation}
+$\bm{e}_i^T(\bm{I}(\bm{P}))^{-1}\bm{e}_i$是$(\bm{I}(\bm{P}))^{-1}\bm{e}_i$第i个2乘2的分块矩阵，
+我们先考虑$i=N_a$即$\bm{e}_{N_a}$中只有最后一个块矩阵是2乘2的单位阵，其余位置都是零元。
+$\bm{e}_{N_a}^T(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}$表示终点位置的位置误差下界。
+为记号简便，记$\bm{u}_{N_a}=\bm{0}$,$\bm{B}_i=\lambda\bm{I}+\bm{u}_i\bm{u}_i^T+\bm{u}_{i+1}\bm{u}_{i+1}^T$,$A_{i+1}=-\bm{u}_i\bm{u}_i^T$
+则$\bm{I}(\bm{P})$可以写为:
+\[
+\bm{I}(\bm{P})=\begin{pmatrix}
+                 \bm{B}_1 & \bm{A}_2 & \bm{0} & \dots & \bm{0} \\
+                 \bm{A}_2 & \bm{B}_2 & \bm{A}_3 & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{A}_{N_a} & \bm{B}_{N_a}
+               \end{pmatrix}
+\]
+$\bm{I}(\bm{P})$可以做LU分解如下:
+\begin{equation}\label{eq:LU}
+  \bm{I}(\bm{P})=\begin{pmatrix}
+                 \bm{I}_2 & \bm{0} & \bm{0} & \dots & \bm{0} \\
+                 \bm{L}_2 & \bm{I}_2 & \bm{0} & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{L}_{N_a} & \bm{I}_{2}
+               \end{pmatrix}\begin{pmatrix}
+                 \bm{U}_1 & \bm{A}_2 & \bm{0} & \dots & \bm{0} \\
+                 \bm{0} & \bm{U}_2 & \bm{A}_3 & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{0} & \bm{U}_{N_a}
+               \end{pmatrix}
+\end{equation}
+$\bm{U}_i$满足如下递推关系：
+\begin{equation}\label{eq:U_recursive_formula}
+\begin{cases}
+  \bm{U}_1 &= \bm{B}_1 \\
+  \bm{U}_i &= \bm{B}_i-\bm{A}_i\bm{B}_{i-1}^{-1}\bm{A}_i,i\geq 2
+\end{cases}
+\end{equation}
+进一步可以求出
+\begin{equation}\label{eq:thomas_final}
+\bm{e}_{N_a}^T(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}=U_{N_a}^{-1}
+\end{equation}
+关于$U_{N_a}$的结构我们有如下定理:
+\begin{theorem}
+$U_{N_a}$一个特征值是$\lambda$，另一个特征值$T_1$可以用下面的递归方法得到
 \begin{equation}\label{eq:recursive_efim}
 \begin{split}
 \underbrace{T_{i-1}-\lambda}_{M} & =\frac{1}{1+\frac{\sin^2\theta_i}{\lambda}+\frac{\cos^2\theta_i}{T_i}},2\leq i\leq N_a-1\\
 T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 \end{split}
 \end{equation}
-其中$\theta_i=\angle (\bm{p}_{t_i}-\bm{p}_{t_{i-1}},\bm{p}_{t_i}-\bm{p}_{t_{i+1}})$。
+其中$\theta_i=\measuredangle (u_i,u_{i+1})$。
 %Ti should be described by symbol, not natural language.
+\end{theorem}
 具体推导过程详见附录[\ref{B_F_1}]
-
-这个求解是针对目标节点的记时起点或终点而言的，如果针对其时间中点，则其可分别看成两段轨迹的起点和终点，
-其费舍尔信息矩阵为:$\bm{I}_p=\lambda I+M_1\bm{u}\bm{u}^{\textrm{T}} +M_2\bm{v}\bm{v}^{\textrm{T}} $
-其中$\bm{u},\bm{v}$是与目标位置$\bm{p}$直接相连的两个位置$\bm{p}_1,\bm{p}_2$与目标节点的方向向量。$M_1,M_2$满足递推公式(\ref{eq:recursive_efim})，
-但具体角度参数可能不一样，假设$N_a$是奇数使得时间中点存在于待测位置中，于是每个M算到$\frac{N_a+1}{2}$
-但如果我们考虑的是$N_a\to \infty$的情形，则不受终止位置的限制。
-$\bm{I}_p$的两个特征值为可由式(\ref{eq:Lambda})得出：
-\[
-\lambda_{1,2}=\lambda+\frac{M_1+M_2\pm \sqrt{M_1^2+M_2^2+2M_1M_2\cos2\phi}}{2}
-\]
-$\phi$为夹角$\angle(\bm{p}_1-\bm{p},\bm{p}_2-\bm{p})$,注意到时间中点时两个特征值均比$\lambda$大。
-我们先考虑所有$\bm{u}_i=(1,0)^{\textrm{T}} $的特殊情形，此时一个特征值为$\lambda$，另一个特征值写成连分式为：
-\begin{equation}\label{eq:gcf_1}
-\lambda+\frac{2}{[1,\lambda,1,\lambda,\dots]}=\lambda+\cfrac{2}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}
+% \nonumber % Remove numbering (before each equation)
+%\begin{definition}
+%    设矩阵$I=\left(\begin{array}{cc}A&B\\C&D\end{array}\right)$,那么矩阵$I$关于D的Schur补定义为$
+%    I/\ D=A-BD^{-1}C$,若$I^{-1}$与I作同样的分块，则$(I/\ D)^{-1}$是$I^{-1}$左上角的分块矩阵。
+%\end{definition}
+%\begin{remark}
+%	在我们的应用场景中，矩阵$I$是费舍尔信息矩阵，可以证明$(I/\ D)$给出于参数空间$\Theta$的子空间的费舍尔信息矩阵，计算$\text{tr}(I^%{-1})$可以分解为计算各个子空间的误差再求和，一般取子空间的大小为2维，对应着一个位置的XY坐标。$I/\ D$在我们的应用场景中也称为等效费舍尔信%息矩阵(Equivalent Fisher Information Matrix)。
+%\end{remark}
+%{用Schur补求解节点平均定位误差}
+\begin{remark}
+终点的定位误差
+\begin{equation}\label{eq:final_speb}
+\text{SPEB}=\frac{1}{\lambda}+\frac{1}{T_1}
 \end{equation}
-我们先求循环的部分的连分式的值K，然后代入$\lambda+2/K$中即可
-K对应的迭代矩阵循环周期为2，
-写成$\begin{pmatrix}1 & 1 \\1 & 0\end{pmatrix}\begin{pmatrix}\lambda & 1 \\1 & 0\end{pmatrix}$
-解方程$x=\frac{(\lambda+1)x+1}{\lambda x+1}$并考虑到解$x>0$，得$K=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2\lambda}$，
-最后得时间中点所求的目标节点的误差下界为$\sqrt{\lambda^2+4\lambda}$。同理，将式\ref{eq:gcf_1}中分子2改为1求出对应于时间起点或终点
-误差下界为
-\begin{align}\notag\label{eq:starting_or_ending}
-M^*:&=[\lambda,1,\lambda,1,\dots]\\
-&=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
+强度量$\lambda$确定后，研究$N_a$增大对SPEB的影响归结为研究$T_1(N_a)$的性质，下面我们将采用连分式的数学方法研究$T_1(N_a)$关于$N_a\to \infty$的收敛性和收敛速度的问题，本文中用到的关于连分式的结论在附录[\ref{C_F}]中列出\cite{ContinuedFraction}：
+\end{remark}
+\begin{remark}
+上述求解是针对目标节点的记时终点而言，记时起点完全类似。如果针对其时间中点，则其可分别看成两段轨迹的起点和终点，
+可以推出其费舍尔信息矩阵为:
+\[
+\bm{I}(\bm{p}_i)=\lambda I+M_1\bm{u}\bm{u}^{\textrm{T}} +M_2\bm{v}\bm{v}^{\textrm{T}}
+\]
+其中$\bm{u}=\frac{\bm{p}_i-\bm{p}_{i-1}}{||\bm{p}_i-\bm{p}_{i-1}||}$,
+$\bm{v}=\frac{\bm{p}_i-\bm{p}_{i+1}}{||\bm{p}_i-\bm{p}_{i+1}||}$,
+$\phi=\measuredangle(\bm{u},\bm{v})$,
+$M_1,M_2$分别作为各段轨迹的记时终点满足递推公式(\ref{eq:recursive_efim}),
+$\bm{I}_p$的两个特征值为可由式(\ref{eq:Lambda})得出：
+\begin{equation}\label{eq:time_interval_case}
+\lambda_{1,2}=\lambda+\frac{M_1+M_2\pm \sqrt{M_1^2+M_2^2+2M_1M_2\cos2\phi}}{2}
+\end{equation}
+注意到时间中点时两个特征值均比$\lambda$大。
+%with no proof, because of time limit
+\end{remark}
+为解析地求出$\lim_{N_a\to \infty}T_1(N_a)$,我们先考虑所有$\bm{u}_i=(1,0)^{\textrm{T}} $的特殊情形，此时
+\begin{align}\notag\label{eq:gcf_1}
+\lim_{N_a\to \infty}T_1(N_a)=&\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}\\
+=&[\lambda,1,\lambda,1,\dots]
 \end{align}
+根据定理(\ref{theorem:quadratic_cyclic})我们可以求出
+%先求循环的部分的连分式的值K，然后代入$\lambda+2/K$中即可
+%K对应的迭代矩阵循环周期为2，
+%写成$\begin{pmatrix}1 & 1 \\1 & 0\end{pmatrix}\begin{pmatrix}\lambda & 1 \\1 & 0\end{pmatrix}$
+%解方程$x=\frac{(\lambda+1)x+1}{\lambda x+1}$并考虑到解$x>0$，得$K=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2\lambda}$，
+%最后得时间中点所求的目标节点的误差下界为$\sqrt{\lambda^2+4\lambda}$。同理，将式\ref{eq:gcf_1}中分子2改为1求出对应于时间起点或终点
+误差下界为
+\begin{equation}\notag\label{eq:starting_or_ending}
+M^*:=\lim_{N_a\to \infty}T_1(N_a)=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
+\end{equation}
+对于时间中点的情形，由式(\ref{eq:time_interval_case})可知其一个特征值为$\lambda$,另一个特征值:
+\begin{align}\notag
+\lambda_2=&\lambda+\frac{2}{[1,\lambda,1,\lambda,\dots]}\\
+=&\lambda+\cfrac{2}{1+\cfrac{1}{\lambda+\cfrac{1}{1+\cfrac{1}{\lambda+\dots}}}}
+\end{align}
+同样求出$\lambda_2=\sqrt{\lambda^2+4\lambda}$,这个结果与式(\ref{eq:a24ab})相一致。
 
-从时间间隔起始位置误差下界的一般表达式可以看出：
+
+从时间间隔终点位置误差下界的一般表达式可以看出：
 \begin{enumerate}
-  \item Schur补做特征值分解后，在一个方向上的信息量始终为$\lambda$，减小时间间隔也无法改善;
-  \item 另一个方向上信息量随$N_a$增大而增大，但有一个上界，粗略的讲不可能超过$\lambda+1$
-  \item 若某两次时间间隔夹角正交，则$\cos\theta_i=0$之后的所有位置均不能对时间间隔起始位置的定位有贡献。
+  \item 根据式(\ref{eq:final_speb})SPEB在一个方向上始终为$\frac{1}{\lambda}$，减小时间间隔也无法改善;
+  \item 另一个方向上随$N_a$的增大$T_1(N_a)$会增大，但有一个上界，粗略的讲不可能超过$\lambda+1$
+  \item 若某两次时间间隔夹角正交，则$\cos\theta_i=0$,即$t_i$时刻之前的所有位置均不能对终点位置的定位有贡献。
 \end{enumerate}
 对于一般的情形，当时间间隔比较小时，有理由假设角度不会有大的突变，且若轨迹的切向量如果是连续变化的，那么时间间隔充分小，前后两次测量间
-角度可认为不变，那么有理由认为之前求的$M^*$是对一般的曲线轨迹在$\Delta t\to 0$时成立。我们有下面的定理,证明可参考附录[\ref{B_F_6}]
+角度可认为不变，那么有理由认为之前求的$M^*$是对一般的曲线轨迹在$\Delta t\to 0$时成立。因此我们有如下定理,证明可参考附录[\ref{B_F_6}]
 \begin{theorem}\label{theorem:arbitrary_curve}
 若平面轨迹曲线参数化形式为$t\in[0,1]\rightarrow \bm{p}(t)=(x(t),y(t))$,满足
 \begin{itemize}
@@ -354,9 +394,10 @@ M^*:&=[\lambda,1,\lambda,1,\dots]\\
 \begin{figure}
   \centering
   \includegraphics[width=400pt]{different_curve.eps}
-  \caption{$\lambda=2$时不同曲线随采样点加密趋近极限值的情况;其中抛物轨迹对应的曲线是$(t,t^2)$,半圆轨迹是$(\cos(\pi t),\sin(\pi t))$}\label{figure:tend_to_limit}
+  \caption{$\lambda=2$时不同曲线随采样点加密$T_1(N_a)$趋近极限值$M^*$的情况;其中抛物轨迹对应的曲线是$(t,t^2)$,半圆轨迹是$(\cos(\pi t),\sin(\pi t))$}\label{figure:tend_to_limit}
 \end{figure}
 %圆弧仿真
+
 由图\ref{figure:tend_to_limit}可见，
 \begin{itemize}
   \item 随着$\Delta t$的减小，各种曲线均二次收敛于极限值，二次收敛的结果可以从log-log图的斜率是2印证，
@@ -365,14 +406,20 @@ M^*:&=[\lambda,1,\lambda,1,\dots]\\
 \end{itemize}
 虽然$\sqrt{\lambda^2+4\lambda}$是一个最大的信息量，但下面的定理指出，较远的时间间隔的位置的贡献实际上是幂指数衰减的，证明见附录[\ref{B_F_2}]：
 \begin{theorem}\label{theorem:exponential_decreasing}
-若相邻时间间隔最大的角度变化量小于$\Delta \theta$，则由式(\ref{eq:recursive_efim})确定的数列$T_1(N_a)$(简记为$T_{N_a}$)的增量$\Delta_{+} T_{N_a}:=T_{N_a+1}-T_{N_a},\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时满足:
+若相邻时间间隔最大的角度变化量小于$\Delta \theta$，考虑在$t_1$时刻前的$t_0$时刻引入节点位置$\bm{p}_0$与$\bm{p}_1$有协作，这时由式(\ref{eq:recursive_efim})可计算出$T'_1(N_a)$大于原来的$T_1(N_a)$,记增量$\Delta_+ T_1(N_a):=T'_1(N_a)-T_1(N_a)$,$N_a=1$时有$\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时满足:
 \[
-\frac{(\cos\Delta\theta)^{2(N_a-1)}}{(1+1/\lambda)^2(\lambda^2+2\lambda)(2+\lambda)^{2(N_a-2)}}\leq \Delta_{+} T_{N_a}\leq\frac{1}{(\lambda^2+2\lambda)(1+\lambda)^{2(N_a-2)}}
+\frac{(\cos\Delta\theta)^{2(N_a-1)}}{(1+1/\lambda)^2(\lambda^2+2\lambda)(2+\lambda)^{2(N_a-2)}}\leq \Delta_+ T_1(N_a)\leq\frac{1}{(\lambda^2+2\lambda)(1+\lambda)^{2(N_a-2)}}
 \]
 \end{theorem}
 \begin{remark}
-由于费舍尔信息随链路是幂指数衰减，再对某一时刻的目标节点进行定位时，只需考虑前后几个时刻的位置即可，较远的时刻基本没有信息量，利用上只会增加计算上的开销而对定位性能不会有多大的提升。
-
+$T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定理(\ref{theorem:exponential_decreasing})指出在距离终点由于费舍尔信息随链路是幂指数的衰减的，由于
+\begin{align*}
+  \Delta \text{SPEB}=&(\frac{1}{\lambda}+\frac{1}{T_1(N_a)})-(\frac{1}{\lambda}+\frac{1}{T_1(N_a)})\\
+  =&\frac{\Delta_+ T_1(N_a)}{T_1(N_a)T'_1(N_a)}\\
+  \Longrightarrow &\frac{\Delta_+ T_1(N_a)}{(\lambda+1)^2}\leq  \Delta \text{SPEB} \leq \frac{\Delta_+ T_1(N_a)}{\lambda^2}
+\end{align*}
+所以误差下界的误差规律与$\Delta_{+} T_{1}$的规律一致，即我们得出了在时间协作的场景中的$N_a$条链路之外增加一层协作链路使目标节点定位误差的下降的数量是随$N_a$指数衰减的，因此在对某时刻的节点进行定位时，只需考虑其前后几个时刻的位置即可，较远的时刻基本没有信息量，利用上只会增加计算上的开销而对定位性能不会有多大的提升。
+\end{remark}
 为说明此结论，我们对式\ref{eq:recursive_efim}取不同的$\lambda$进行简单的数值计算，其中$\theta_i$按照~\ref{section:temporal_cooperative_localization}小节中$[0,2\pi]$均匀分布的假设求不同的$N_a$时$T_i$的性能平均，结果图~\ref{fig:continuous_fraction_exponential}所示:
 \begin{figure}
   \centering
@@ -392,42 +439,44 @@ M^*:&=[\lambda,1,\lambda,1,\dots]\\
 
     分析图\ref{fig:continuous_fraction_exponential_lower_bound}可知，对于同等定位强度，如果目标节点角度变化得比较快，则信息衰减得也更快，多条链路后的位置将提供更少的信息量。
 \end{itemize}
-\end{remark}
 \begin{remark}
-在\ref{section:temporal_cooperative_localization}小节中，推导得出两个节点时间一次协作的模型问题可以转化为单节点的模形，但存在一个区别在于这里各时刻速度方向$\theta_i$是随机变量，因此求得的SPEB$\frac{1}{\lambda}+\frac{1}{T_1}$是关于$\theta_i$的随机变量，要对其求数学期望才能得到平均性能。
+在\ref{section:temporal_cooperative_localization}小节中，推导得出两个节点时间一次协作的模型问题可以转化为单节点的模型，但存在一个区别在于这里各时刻速度方向$\theta_i$是随机变量，因此求得的SPEB$\frac{1}{\lambda}+\frac{1}{T_1}$是关于$\theta_i$的随机变量，要对其求数学期望才能得到平均性能。
 
-沿用式\ref{eq:recursive_efim}的假设，对诸$\theta_i$求平均后即得平均性能，由于是连分式的形式无法显式给出平均后的结果，但在后续仿真中我们将分别采用蒙特卡罗模拟的方法估计这个平均性能。
+%沿用式\ref{eq:recursive_efim}的假设，对诸$\theta_i$求平均后即得平均性能，由于是连分式的形式无法显式给出平均后的结果，但在后续仿真中我%们将分别采用蒙特卡罗模拟的方法估计这个平均性能。
 
-另外由于定理~\ref{theorem:exponential_decreasing}中的信息衰减上下界不含$\theta$,因此也是平均性能提升的衰减速率。如果针对两个节点时间协作的模型问题，则应
-估计$\sum_{i=N_a}^{2N_a}\frac{1}{q^{2i}}$,结果还是$q^{2N_a}$量级，即$N_a$层后面的所有链路的增益与第$N_a$层的增益相当，即我们有如下推论，详见附录[\ref{B_F_5}]:
+%如果我们考虑的是在固定的时间间隔内加密采样时间,即增大$N_a$,下面的定理指出了$T_1(N_a)$的收敛速度。
+%在定理\ref{theorem:arbitrary_curve}的证明过程中已经指出了
+%另外由于定理~\ref{theorem:exponential_decreasing}中的信息衰减上下界不含$\theta$,因此也是平均性能提升的衰减速率。如果针对两个节点时%间协作的模型问题，则应
+%估计$\sum_{i=N_a}^{2N_a}\frac{1}{q^{2i}}$,结果还是$q^{2N_a}$量级，即$N_a$层后面的所有链路的增益与第$N_a$层的增益相当，即我们有如%下推论，详见附录[\ref{B_F_5}]:
 \end{remark}
-\begin{corollary}[定理\ref{theorem:exponential_decreasing}的推论]\label{corollary:exponential_decreasing}
-在定理\ref{theorem:exponential_decreasing}的的条件下，数列$\{T_{N_a}\}$收敛于$T_{\infty}$,收敛速度是指数收敛的，即\[
-\exists q>1,C>0,s.t. |T_{N_a}-T_{\infty}|\leq\frac{C}{q^{N_a}}
-\]
-\end{corollary}
-上面的推导过程具有一般性，下面我们不对未知节点测距方差作出相等的假设，则对$a\bm{I}+b\bm{J}$提取a，并设$\lambda_{ij}=\frac{b}{a\sigma_{ij}^2}$于是我们只需考虑$\bm{I}+\bm{J}$,其中
-\[\scriptsize{
-J=\left(
+%\begin{corollary}[定理\ref{theorem:exponential_decreasing}的推论]\label{corollary:exponential_decreasing}
+%在定理\ref{theorem:exponential_decreasing}的的条件下，数列$\{T_{N_a}\}$收敛于$T_{\infty}$,收敛速度是指数收敛的，即\[
+%\exists q>1,C>0,s.t. |T_{N_a}-T_{\infty}|\leq\frac{C}{q^{N_a}}
+%\]
+%\end{corollary}
+式(\ref{eq:recursive_efim})的推导过程具有一般性，如果我们不对未知节点测距方差作出相等的假设，也可以得到终点SPEB的连分式表表示形式,简述如下:
+
+在$a\bm{I}+b\bm{J}$中提取a，并设$\lambda_{ij}=\frac{b}{a\sigma_{ij}^2}$于是我们只需考虑$\bm{I}+\bm{J}$,其中
+\[J=\left(
 \begin{array}{ccccc}
-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &-\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\bm{0}&\dots&\bm{0}\\
+\lambda_{12}\bm{u}_1\bm{u}_1^{\textrm{T}} &-\lambda_{12}\bm{u}_1\bm{u}_1^{\textrm{T}} &\bm{0}&\dots&\bm{0}\\
 &&&&\\
--\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} &\lambda_{12}\bm{u}_{12}\bm{u}_{12}^{\textrm{T}} +&-\lambda_{23}\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &\dots&0\\
-&\lambda_{23}\bm{u}_{23}\bm{u}_{23}^{\textrm{T}} &&&\\
+-\lambda_{12}\bm{u}_1\bm{u}_1^{\textrm{T}} &\lambda_{12}\bm{u}_1\bm{u}_1^{\textrm{T}} +&-\lambda_{23}\bm{u}_2\bm{u}_2^{\textrm{T}} &\dots&0\\
+&\lambda_{23}\bm{u}_2\bm{u}_2^{\textrm{T}} &&&\\
 \vdots &\vdots&\ddots &\vdots&\vdots\\
-\bm{0}&\dots&\bm{0}&-\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} &\lambda_{N-1,N}\bm{u}_{N-1,N}\bm{u}_{N-1,N}^{\textrm{T}} \\
+\bm{0}&\dots&\bm{0}&-\lambda_{N_a-1,N_a}\bm{u}_{N_a-1}\bm{u}_{N_a-1}^{\textrm{T}} &\lambda_{N_a-1,N_a}\bm{u}_{N_a-1}\bm{u}_{N_a-1}^{\textrm{T}} \\
 \end{array}
-\right)}
+\right)
 \]
 类似式~(\ref{eq:recursive_efim})，
-我们可以导出目标节点Schur补一个特征值为1，另一个特征值$T_1$满足下面的递推关系式：
+我们可以导出终点节点的SPEB$=1+\frac{1}{T_1}$,$T_1$满足下面的递推关系式：
 \begin{equation}\label{eq:recursive_efim_second}
   T_i=\frac{1}{\lambda_{i,i+1}^{-1}+\sin^2\theta_i+\frac{\cos^2\theta_i}{T_{i+1}}}
 \end{equation}
 其基本形式和(\ref{eq:recursive_efim})相同，计算算到$T_{N_a}=1$，
 具体推导过程可参考[\ref{B_F_3}]
 
-并且可以证明,减小诸$\theta$可以提高$T_1$即增大信息量，因此在线性网络中，当目标节点作直线运动时，确定其各个时刻的位置获得的信息量最大，因而精度最高。
+并且我们可以证明,减小诸$\theta$可以提高$T_1$即增大信息量，因此在线性网络中，当目标节点作直线运动时，确定其各个时刻的位置获得的信息量最大，因而精度最高。
 \section{正方形网络与正六边形网络}\label{section:square_and_hexagon_network}
 在协作定位网络的问题模型下，我们利用Schur补的数学工具，考虑大规模空间协作两种特殊的情形：
 正方形网络和正六边形网络。正六边形网络的每个内部节点周围有3个节点与之协作，且该内部节点位于周围三个节点构成的正三角形的重心上。
