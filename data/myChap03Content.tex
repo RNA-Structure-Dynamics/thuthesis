@@ -1,7 +1,6 @@
 \chapter{简单网络}\label{cha:content3}
 
 \section{非协作单节点定位网络}\label{section:circle_general}
-{非协作单节点定位网络描述与求解}
 非协作单节点定位网络的性能描述可以借助一种比较直观的方式，为此引入以下\textbf{信息椭圆}的概念\cite{LimitBound}:
 \begin{definition}
 信息椭圆是参数空间$\theta$上由费舍尔信息矩阵定义的空间曲面:
@@ -69,7 +68,7 @@ $\theta$满足方程
 \section{两个未知节点协作的场景}\label{section:two_node_cooperation}
 两个移动节点协作情况下，为求4维费舍尔信息矩阵特征多项式的表达式，需要下面的定理：
 \begin{theorem}\label{thm:ShenIden}
-设$J$是对称正定的矩阵(对于FIM这一点成立)，那么下式成立：
+设$J$是对称正定的矩阵，那么下式成立：
 \begin{equation}\label{eq:ShenIden}
 |J+\epsilon \bm{u}\bm{u}^{\textrm{T}} |=|J|+\epsilon \bm{u}^{\textrm{T}} J^*\bm{u}
 \end{equation}
@@ -163,7 +162,7 @@ $|D+\epsilon \bm{y}\bm{y}^{\textrm{T}} |=|D|(1+\epsilon \bm{y}^{\textrm{T}} D^{-
 |J+\epsilon \bm{u}\bm{v}^{\textrm{T}} |=|J|+\epsilon \bm{u}^{\textrm{T}} J^*\bm{v}
 \end{equation}
 \end{corollary}
-下面考虑两个节点协作的情形:
+下面我们利用定理(\ref{thm:ShenIden})考虑两个节点协作的情形:
 原4维FIM结构为:
 \begin{equation}
 A=\left(\begin{array}{cc}
@@ -196,10 +195,13 @@ P(\lambda)= (\lambda-a_1)(\lambda-a_2)(\lambda-a_3)(\lambda-a_4)(1+\epsilon(\fra
 \end{theorem}
 \section{本章小节}\label{section:conclusion3}
   % Keep the summary *very short*.
-  我们在本章中研究了通过改变角度参数使得误差下界最小这一问题，现总结如下:
+  我们在本章中针对简单网络研究了通过改变角度参数使得误差下界最小这一问题，现总结如下:
   \begin{itemize}
-  \item 对于非协作情形，如果能改变锚点部署的角度使得费舍尔信息矩阵是对角阵，则误差下界最小，但存在无论怎样改变锚点部署都不可能使得费舍尔信息矩阵是对角阵的情况，即式(\ref{eq:SPEB_min})可能达不到。
+  \item 对于非协作情形，如果能改变锚点部署的角度使得费舍尔信息矩阵是对角阵(信息椭圆退化成圆)，则误差下界最小，但根据图\ref{fig:eccentricity}的结果，仿真1000次大部分情况下椭圆离心率在0.4以上,因此信息椭圆退化成圆只是一个理论最优的结果，实际系统很难达到。
   \item 对于两节点协作的情形，定理\ref{theorem:2node_in_cooperation}给出了一个充分条件以确定定位误差最小的情形。
   \end{itemize}
-  总体来说，上面的结论都比较弱，在锚点贡献的信息是各向异性的情况下，很难对协作信息作理论推导，因此在接下来的研究中，我们总假设
-  锚点贡献的信息是各向同性的，并且我们会采用不同于\ref{section:two_node_cooperation}小节的数学方法来求解费舍尔信息矩阵的特征值。
+
+
+  尽管锚点贡献的信息椭圆在实际中很难退化成圆，但从\ref{section:two_node_cooperation}小节的推导来看，锚点贡献的信息是各向异性的情况下作理论推导会非常困难，文献\cite{LimitBound3}给出了三个节点协作场景下定位误差下界一般的表达式，但对于更多节点协作的情形，如果我们关心协作信息的特性，不妨简化锚点贡献的信息为各向同性的，这样做一方面是出于进一步理论分析的方便同时又不影响要研究的主要问题。
+  因此在接下来的研究中，我们总是假设式(\ref{eq:general_fim})中出现的$I(\bm{p}_i)$是形如$c\bm{I}_2$的对角阵。
+  在接下来的研究工作中我们会采用不同于\ref{section:two_node_cooperation}小节的数学方法来求解费舍尔信息矩阵的特征值。

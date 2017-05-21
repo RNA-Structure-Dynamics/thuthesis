@@ -1,6 +1,5 @@
 \chapter{特殊结构网络}\label{cha:content4}
-\section{特殊全连接网络}\label{section:complete_graph_cooperation}
-{特殊全连接网络描述与求解}
+\section{特殊的全连接网络}\label{section:complete_graph_cooperation}
 在协作定位网络的问题模型下，给出下面三个简化条件:
 \begin{enumerate}
 \item 锚点测距方差$\sigma_i^2=\frac{1}{a}$
@@ -124,7 +123,7 @@ M\sum_{i=1}^N||\sum_{j=1,j\neq i}^N(\bm{p}_1-\bm{p}_j)||^2=1
 \begin{itemize}
   \item 当场景中各待测节点相距较近，而锚点离各待测节点较远时，\ref{section:circle_general}小节说明了各向同性是锚点最优部署的形态，如果考虑锚点相对于各待测节点的分布范围是最优部署的，那么上面对锚点部署使得其贡献的信息量为$a\bm{I}$的假设成立，在之后的讨论中，我们均持此假设。
   \item 假设3是说各待测节点分布在一个圆上，因为各待测节点相距较近，在圆周半径不是很小的情况下，可以近似认为各节点相互测距方差均相等，即假设2成立。
-  \item 通过对特征值的倒数和取平均，每个节点的误差下界的量级是$\frac{4}{bN}$,\ref{section:circle_general}小节最优部署下非协作情形每个节点的误差下界的量级是$\frac{2}{aN}$，相比之下可以看出在a=b的情况下增加2个协作节点才有一个锚点的效果。
+  \item 通过对特征值的倒数和取平均，每个节点的误差下界的量级是$\frac{4}{bN}$,\ref{section:circle_general}小节最优部署下非协作情形每个节点的误差下界的量级是$\frac{2}{aN}$，相比之下可以看出在a=b的情况下增加2个协作节点才达到一个锚点的效果。
 \end{itemize}
 
 \end{remark}
@@ -150,7 +149,8 @@ J=\left(
 \end{array}
 \right)
 \]
-其中$u_i:=u_{i,i+1}$求$\lim_{N\to \infty}\frac{\Tr(J^{-1})}{N}$
+$u_i:=u_{i,i+1}$
+我们可以用$\lim_{N\to \infty}\frac{\Tr(J^{-1})}{N}$来表征节点的各个时刻的位置平均定位误差下界，下面我们试图通过特征值的方法求出这一极限。
 
 
 直接求解该问题需要如下两个引理:
@@ -324,7 +324,7 @@ T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 \begin{remark}
 终点的定位误差
 \begin{equation}\label{eq:final_speb}
-\text{SPEB}=\frac{1}{\lambda}+\frac{1}{T_1}
+\text{SPEB}=\frac{1}{\lambda}+\frac{1}{T_1(N_a)}
 \end{equation}
 强度量$\lambda$确定后，研究$N_a$增大对SPEB的影响归结为研究$T_1(N_a)$的性质，下面我们将采用连分式的数学方法研究$T_1(N_a)$关于$N_a\to \infty$的收敛性和收敛速度的问题，本文中用到的关于连分式的结论在附录[\ref{C_F}]中列出\cite{ContinuedFraction}：
 \end{remark}
@@ -370,7 +370,7 @@ M^*:=\lim_{N_a\to \infty}T_1(N_a)=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
 
 从时间间隔终点位置误差下界的一般表达式可以看出：
 \begin{enumerate}
-  \item 根据式(\ref{eq:final_speb})SPEB在一个方向上始终为$\frac{1}{\lambda}$，减小时间间隔也无法改善;
+  \item 根据式(\ref{eq:final_speb}),SPEB在一个方向上始终为$\frac{1}{\lambda}$，减小时间间隔也无法改善;
   \item 另一个方向上随$N_a$的增大$T_1(N_a)$会增大，但有一个上界，粗略的讲不可能超过$\lambda+1$
   \item 若某两次时间间隔夹角正交，则$\cos\theta_i=0$,即$t_i$时刻之前的所有位置均不能对终点位置的定位有贡献。
 \end{enumerate}
@@ -400,27 +400,27 @@ M^*:=\lim_{N_a\to \infty}T_1(N_a)=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}
 
 由图\ref{figure:tend_to_limit}可见，
 \begin{itemize}
-  \item 随着$\Delta t$的减小，各种曲线均二次收敛于极限值，二次收敛的结果可以从log-log图的斜率是2印证，
+  \item 随着$\Delta t$的减小，各种曲线均二次收敛于极限值，二次收敛的结果可以从log-log图的斜率是1:2印证，
 而从定理\ref{theorem:arbitrary_curve}的证明过程的式(\ref{eq:quatratic_convergence})中出现$\Delta t$的平方可见证明过程的合理性。
   \item 对于不同的曲线，虽然收敛速度的量阶一致，但由于角度变化上有快有慢，所以体现在图中还是有高有低，平均来说，半圆弧在一个时间单位中角度变化了180度，而抛物线只有不到60度，角度变化越小相对更接近直线状态，因而收敛地更快些。
 \end{itemize}
 虽然$\sqrt{\lambda^2+4\lambda}$是一个最大的信息量，但下面的定理指出，较远的时间间隔的位置的贡献实际上是幂指数衰减的，证明见附录[\ref{B_F_2}]：
 \begin{theorem}\label{theorem:exponential_decreasing}
-若相邻时间间隔最大的角度变化量小于$\Delta \theta$，考虑在$t_1$时刻前的$t_0$时刻引入节点位置$\bm{p}_0$与$\bm{p}_1$有协作，这时由式(\ref{eq:recursive_efim})可计算出$T'_1(N_a)$大于原来的$T_1(N_a)$,记增量$\Delta_+ T_1(N_a):=T'_1(N_a)-T_1(N_a)$,$N_a=1$时有$\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时满足:
+若相邻时间间隔最大的角度变化量小于$\Delta \theta$，考虑在$t_1$时刻前的$t_0$时刻引入节点位置$\bm{p}_0$与$\bm{p}_1$有协作，这时由式(\ref{eq:recursive_efim})可计算出$T'_1(N_a)$大于原来的$T_1(N_a)$,记增量$\Delta_+ T_1(N_a):=T'_1(N_a)-T_1(N_a)$,$N_a=1$时有$\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时$\Delta_+ T_1(N_a)$满足:
 \[
 \frac{(\cos\Delta\theta)^{2(N_a-1)}}{(1+1/\lambda)^2(\lambda^2+2\lambda)(2+\lambda)^{2(N_a-2)}}\leq \Delta_+ T_1(N_a)\leq\frac{1}{(\lambda^2+2\lambda)(1+\lambda)^{2(N_a-2)}}
 \]
 \end{theorem}
 \begin{remark}
-$T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定理(\ref{theorem:exponential_decreasing})指出在距离终点由于费舍尔信息随链路是幂指数的衰减的，由于
+$T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定理(\ref{theorem:exponential_decreasing})指出在距离终点费舍尔信息随链路是幂指数的衰减的，由于
 \begin{align*}
   \Delta \text{SPEB}=&(\frac{1}{\lambda}+\frac{1}{T_1(N_a)})-(\frac{1}{\lambda}+\frac{1}{T_1(N_a)})\\
   =&\frac{\Delta_+ T_1(N_a)}{T_1(N_a)T'_1(N_a)}\\
   \Longrightarrow &\frac{\Delta_+ T_1(N_a)}{(\lambda+1)^2}\leq  \Delta \text{SPEB} \leq \frac{\Delta_+ T_1(N_a)}{\lambda^2}
 \end{align*}
-所以误差下界的误差规律与$\Delta_{+} T_{1}$的规律一致，即我们得出了在时间协作的场景中的$N_a$条链路之外增加一层协作链路使目标节点定位误差的下降的数量是随$N_a$指数衰减的，因此在对某时刻的节点进行定位时，只需考虑其前后几个时刻的位置即可，较远的时刻基本没有信息量，利用上只会增加计算上的开销而对定位性能不会有多大的提升。
+所以误差下界的变化规律与$\Delta_{+} T_{1}$的规律一致，即我们得出了在时间协作的场景中的$N_a$条链路之外增加一层协作链路使目标节点定位误差的下降的数量是随$N_a$指数衰减的，因此在对某时刻的节点进行定位时，只需考虑其前后几个时刻的位置即可，较远的时刻基本没有信息量，利用上只会增加计算上的开销而对定位性能不会有多大的提升。
 \end{remark}
-为说明此结论，我们对式\ref{eq:recursive_efim}取不同的$\lambda$进行简单的数值计算，其中$\theta_i$按照~\ref{section:temporal_cooperative_localization}小节中$[0,2\pi]$均匀分布的假设求不同的$N_a$时$T_i$的性能平均，结果图~\ref{fig:continuous_fraction_exponential}所示:
+为说明此结论，我们对式\ref{eq:recursive_efim}取不同的$\lambda$进行简单的数值计算，其中$\theta_i$按照~\ref{section:temporal_cooperative_localization}小节中$[0,2\pi]$均匀分布的假设求不同的$N_a$时$T_i$的性能平均，结果图~\ref{fig:continuous_fraction_exponential}所示。
 \begin{figure}
   \centering
   \includegraphics[width=400pt]{decreasing_exponential.eps}
@@ -430,7 +430,9 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
 \begin{itemize}
 \item 通过蒙特卡罗仿真进一步验证了定理~\ref{theorem:exponential_decreasing}的正确性。
 \item $\lambda=\frac{a}{b}$，表示锚点定位强度与目标节点协作强度之比，当$\lambda$较大即锚点定位更强时，图中协作信息量下降得更快，表明更远的协作链路所能提供的信息更少。
-\item 实际随机模拟中的信息衰减速度要快于定理~\ref{theorem:exponential_decreasing}给出的上界，这主要是因为随机模拟中出现角度正交的情况时会阻断信息量从较远链路的传播。为了讨论信息衰减下界，我们取$\lambda=1$,并假设链路的夹角$\theta_i$服从零均值的正态分布，对于给定的$\Delta \theta$标准差$\sigma$满足$3\sigma=\Delta \theta$,由$3-\sigma$原则可近似认为角度变化不会超过$\Delta$,数值结果如图\ref{fig:continuous_fraction_exponential_lower_bound}所示
+\item 实际随机模拟中的信息衰减速度要快于定理~\ref{theorem:exponential_decreasing}给出的上界，这主要是因为随机模拟中出现角度正交的情况时会阻断信息量从较远链路的传播。\end{itemize}
+
+为了讨论信息衰减下界，我们取$\lambda=1$,并假设链路的夹角$\theta_i$服从零均值的正态分布，对于给定的$\Delta \theta$标准差$\sigma$满足$3\sigma=\Delta \theta$,由$3-\sigma$原则可近似认为角度变化不会超过$\Delta \theta$,数值结果如图\ref{fig:continuous_fraction_exponential_lower_bound}所示。
     \begin{figure}
       \centering
       \includegraphics[width=400pt]{decreasing_exponential_lower_bound.eps}
@@ -438,9 +440,9 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
     \end{figure}
 
     分析图\ref{fig:continuous_fraction_exponential_lower_bound}可知，对于同等定位强度，如果目标节点角度变化得比较快，则信息衰减得也更快，多条链路后的位置将提供更少的信息量。
-\end{itemize}
-\begin{remark}
-在\ref{section:temporal_cooperative_localization}小节中，推导得出两个节点时间一次协作的模型问题可以转化为单节点的模型，但存在一个区别在于这里各时刻速度方向$\theta_i$是随机变量，因此求得的SPEB$\frac{1}{\lambda}+\frac{1}{T_1}$是关于$\theta_i$的随机变量，要对其求数学期望才能得到平均性能。
+
+%\begin{remark}
+%在\ref{section:temporal_cooperative_localization}小节中，我们顺便提到了两个节点时间上一次协作的模型，并在推导得出两个节点时间一%次协作的模型问题可以转化为单节点的模型，但存在一个区别在于这里各时刻速度方向$\theta_i$是随机变量，因此求得的SPEB$\frac{1}%{\lambda}+\frac{1}{T_1}$是关于$\theta_i$的随机变量，要对其求数学期望才能得到平均性能。
 
 %沿用式\ref{eq:recursive_efim}的假设，对诸$\theta_i$求平均后即得平均性能，由于是连分式的形式无法显式给出平均后的结果，但在后续仿真中我%们将分别采用蒙特卡罗模拟的方法估计这个平均性能。
 
@@ -448,13 +450,13 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
 %在定理\ref{theorem:arbitrary_curve}的证明过程中已经指出了
 %另外由于定理~\ref{theorem:exponential_decreasing}中的信息衰减上下界不含$\theta$,因此也是平均性能提升的衰减速率。如果针对两个节点时%间协作的模型问题，则应
 %估计$\sum_{i=N_a}^{2N_a}\frac{1}{q^{2i}}$,结果还是$q^{2N_a}$量级，即$N_a$层后面的所有链路的增益与第$N_a$层的增益相当，即我们有如%下推论，详见附录[\ref{B_F_5}]:
-\end{remark}
+%\end{remark}
 %\begin{corollary}[定理\ref{theorem:exponential_decreasing}的推论]\label{corollary:exponential_decreasing}
 %在定理\ref{theorem:exponential_decreasing}的的条件下，数列$\{T_{N_a}\}$收敛于$T_{\infty}$,收敛速度是指数收敛的，即\[
 %\exists q>1,C>0,s.t. |T_{N_a}-T_{\infty}|\leq\frac{C}{q^{N_a}}
 %\]
 %\end{corollary}
-式(\ref{eq:recursive_efim})的推导过程具有一般性，如果我们不对未知节点测距方差作出相等的假设，也可以得到终点SPEB的连分式表表示形式,简述如下:
+式(\ref{eq:recursive_efim})的推导过程具有一般性，如果我们不对未知节点测距方差作出相等的假设，也可以得到终点SPEB的连分式表表示形式,推导过程如下:
 
 在$a\bm{I}+b\bm{J}$中提取a，并设$\lambda_{ij}=\frac{b}{a\sigma_{ij}^2}$于是我们只需考虑$\bm{I}+\bm{J}$,其中
 \[J=\left(
@@ -478,7 +480,7 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
 
 并且我们可以证明,减小诸$\theta$可以提高$T_1$即增大信息量，因此在线性网络中，当目标节点作直线运动时，确定其各个时刻的位置获得的信息量最大，因而精度最高。
 \section{正方形网络与正六边形网络}\label{section:square_and_hexagon_network}
-在协作定位网络的问题模型下，我们利用Schur补的数学工具，考虑大规模空间协作两种特殊的情形：
+在协作定位网络的问题模型下，我们在本节考虑大规模空间协作两种特殊的情形：
 正方形网络和正六边形网络。正六边形网络的每个内部节点周围有3个节点与之协作，且该内部节点位于周围三个节点构成的正三角形的重心上。
 为研究正六边形网络对定位性能的影响，我们考虑以一个节点$\bm{p}$为网络中心，我们称网络中某节点$\bm{p}_n$位于第n层链路上如果$\bm{p}_n$到$\bm{p}$的最短路径为n，图\ref{HexagonNetwork}就是一个只考虑前两层链路的正六边形网络。
 \begin{figure}[h]
@@ -501,7 +503,7 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
   =((\lambda+\frac{3}{2})-\frac{1/2}{\lambda+\frac{3}{2}})^{-1}
 \end{equation}
 \end{lemma}
-  上面的引理能够把连分式中与$u$相关的项化为与$u$无关的项，由此推出度为3的协作网络中心节点SPEB满足:
+  由于正六边形网络的特殊性，类似线性网络的情形，我们可以把定位误差下界写出连分式的形式,而上面的引理能够把连分式中与$u$相关的项化为与$u$无关的项，由此推出度为3的协作网络中心节点SPEB满足:
   \[
 \frac{1}{\text{SPEB}}=\lambda+\frac{3}{2}-\cfrac{3/2}{\lambda+\frac{3}{2}-\cfrac{1/2}{\lambda+3/2-\dots}}
   \]
@@ -511,24 +513,15 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
   \lambda+\frac{3}{2}-\cfrac{3/2}{\lambda+\frac{3}{2}-\cfrac{1/2}{\lambda+3/2-\dots}}=\sqrt{\lambda^2+3\lambda+\frac{1}{4}}-\frac{1}{\lambda+\frac{3}{2}+\sqrt{\lambda^2+3\lambda+\frac{1}{4}}}
   \]
   取倒数即为某方向的误差下界，由于网络的各向同性，x方向和y方向的误差下界都是这个数。
-该误差下界总是比正方形网格x或y方向的误差大。
+且该误差下界总是比正方形网格x或y方向的误差大。
 
 \section{本章小节}\label{section:conclusion4}
   % Keep the summary *very short*.
-   本章中的主要结果除引用连分式的基本结论外，大都是原创性的，而且不乏有一些很强的结果。
+   本章提供了两种求解定位误差下界的思路:求解特殊矩阵的全部特征值和连分式分析法。
+
   \begin{itemize}
-  \item
-  数学方法方面
-  \begin{itemize}
-  \item 本章给出了两类特殊矩阵的全部特值值的求解的详细推导过程。
-  \item 本章对给定的连分式的收敛特性有比较严谨的数学证明。
+  \item 求解特殊矩阵的全部特征值能给出高维信息椭圆的全部结构，可以全局地分析误差下界，但已知的能解析求解全部特征值的矩阵非常有限，而且求解本身有很强的技巧性，因此该方法局限性比较大。
+  \item 线性网络的费舍尔信息矩阵是块三对角矩阵，块三对角矩阵局部展开后可以得到误差下界的连分式表示法$\ref{eq:U_recursive_formula}$，关于连分式的分析可以相对比较一般，正如 式\ref{eq:recursive_efim_second}所示,我们不需要对线性网络的参数作事先的假定,同时可以通过不等式放缩等技巧对给定的连分式的收敛特性有比较严谨的数学证明。
   \end{itemize}
-  \item
-  工程启示方面
-  \begin{itemize}
-  \item
-    协作链路信息指数衰减的特性为分布式定位算法提供理论上的指导。
-  \item
-    协作链路正交会使信息传播中断对节点的路径规划有指导意义。
-  \end{itemize}
-  \end{itemize}
+
+  同时本章最后借助线性网络中的正交性结论，我们得到了一般矩形网络中链路信息传播特点，同时我们还求出了大规模正六边形网络的理论定位误差下界。
