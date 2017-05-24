@@ -1,4 +1,4 @@
-\documentclass[type=master]{thuthesis}
+\documentclass[type=bachelor]{thuthesis}
 
 \usepackage{thuthesis}
 \usepackage{bm}
@@ -8,9 +8,18 @@
 \DeclareMathOperator{\Tr}{Tr}
 \graphicspath{{./figures/}}
 \begin{document}
-\include{data/myChap04Content}
-\begin{appendix}
-\input{data/myAppendix}
-\end{appendix}
+
+% 如果习惯关键字跟在摘要文字后面，可以用直接命令来设置，如下：
+% \ckeywords{协作定位,费舍尔信息矩阵, 定位误差下界,矩阵代数,连分式}
+
+\begin{align}
+\begin{cases}
+\sum \bm{x}_i^{(k)}&=0,k=1,2\\
+\sum \bm{x}_i \cdot \bm{u}_i&=\sum x_i^{(1)} \cos(\frac{2\pi j}{n})+x_i^{(2)} \sin(\frac{2\pi j}{n})=0
+\label{eq:coupling1}\\
+\sum \bm{x}_i \cdot \mathring{\bm{u}}_i &=\sum -x_i^{(1)} \sin(\frac{2\pi j}{n})+x_i^{(2)} \cos(\frac{2\pi j}{n}) =0
+\end{cases}
+\end{align}
+
 
 \end{document}
