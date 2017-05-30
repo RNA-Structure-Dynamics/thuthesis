@@ -37,7 +37,7 @@ I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^{\te
 
 \section[协作定位场景]{协作定位场景}\label{section:cooperative_localization}
 
-考虑一个平面定位场景中不仅部署了$N_b$个位置已知的锚点，还有$N_a$个位置未知的待定位节点，某些位置未知的节点之间可以\textbf{彼此测距}，如图(\ref{fig:cooperative_spatial})所示。第i和第j个未知节点距离测量量服从均值为$||\bm{p}^a_i-\bm{p}^a_j||)$，方差为$\sigma_{ij}$的正态分布$X_{ij}$。
+考虑一个平面定位场景中不仅部署了$N_b$个位置已知的锚点，还有$N_a$个位置未知的待定位节点，某些位置未知的节点之间可以\textbf{彼此测距}，如图(\ref{fig:cooperative_spatial})所示。第i和第j个未知节点距离测量量服从均值为$||\bm{p}_i-\bm{p}_j||)$，方差为$\sigma_{ij}$的正态分布$X_{ij}$。
         \begin{figure}
           \centering
           \includegraphics[width=300pt]{cooperative_spatial.eps}
@@ -52,7 +52,7 @@ F(\bm{X}|\bm{P})=\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p_i})\prod_{(i,j)\
 上式中f的具体表达式为式(\ref{eq:single}),$\mathcal{E}$表示可以彼此测距的未知节点的二元组的集合，而$x_t^i$表示第t个锚点和第i个未知节点的距离测量量。
 
 
-仿照单节点时费舍尔信息矩阵的推导，关于$2N_a$个参数$\{p_i^a\}$的费舍尔信息矩阵$\bm{I}(\bm{P})$有如下的表达形式：
+仿照单节点时费舍尔信息矩阵的推导，关于$2N_a$个参数$\{p_i\}$的费舍尔信息矩阵$\bm{I}(\bm{P})$有如下的表达形式：
 \begin{equation}\label{eq:general_fim}
 \bm{I}(\bm{P})=
 \left(

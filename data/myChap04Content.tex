@@ -265,16 +265,16 @@ f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac
 
 记
 \begin{equation}
-\bm{e}_i=(\bm{0},\dots,\underbrace{\bm{I}_2}_{\text{i-th item}},\dots,\bm{0})^T.
+\bm{e}_i=(\bm{0},\dots,\underbrace{\bm{I}_2}_{\text{i-th item}},\dots,\bm{0})^{\textrm{T}}.
 \end{equation}
 在式(\ref{eq:SPEB_formula})中SPEB可以分解为各节点的定位误差下界之和为:
 \begin{equation}\label{eq:SPEB_every_node}
-  \text{SPEB}=\sum_{i=1}^{N_a} \bm{e}_i^T(\bm{I}(\bm{P}))^{-1}\bm{e}_i.
+  \text{SPEB}=\sum_{i=1}^{N_a} \bm{e}_i^{\textrm{T}}(\bm{I}(\bm{P}))^{-1}\bm{e}_i.
 \end{equation}
-$\bm{e}_i^T(\bm{I}(\bm{P}))^{-1}\bm{e}_i$是$(\bm{I}(\bm{P}))^{-1}\bm{e}_i$第i个2乘2的分块矩阵，
+$\bm{e}_i^{\textrm{T}}(\bm{I}(\bm{P}))^{-1}\bm{e}_i$是$(\bm{I}(\bm{P}))^{-1}\bm{e}_i$第i个2乘2的分块矩阵，
 我们先考虑$i=N_a$即$\bm{e}_{N_a}$中只有最后一个块矩阵是2乘2的单位阵，其余位置都是零元。
-$\bm{e}_{N_a}^T(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}$表示终点位置的位置误差下界。
-为记号简便，记$\bm{u}_{N_a}=\bm{0}$,$\bm{B}_i=\lambda\bm{I}+\bm{u}_i\bm{u}_i^T+\bm{u}_{i+1}\bm{u}_{i+1}^T$,$A_{i+1}=-\bm{u}_i\bm{u}_i^T$
+$\bm{e}_{N_a}^{\textrm{T}}(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}$表示终点位置的位置误差下界。
+为记号简便，记$\bm{u}_{N_a}=\bm{0}$,$\bm{B}_i=\lambda\bm{I}+\bm{u}_i\bm{u}_i^{\textrm{T}}+\bm{u}_{i+1}\bm{u}_{i+1}^{\textrm{T}}$,$A_{i+1}=-\bm{u}_i\bm{u}_i^{\textrm{T}}$
 则$\bm{I}(\bm{P})$可以写为:
 \begin{equation}
 \bm{I}(\bm{P})=\begin{pmatrix}
@@ -302,12 +302,12 @@ $\bm{U}_i$满足如下递推关系：
 \begin{equation}\label{eq:U_recursive_formula}
 \begin{cases}
   \bm{U}_1 &= \bm{B}_1 \\
-  \bm{U}_i &= \bm{B}_i-\bm{A}_i\bm{B}_{i-1}^{-1}\bm{A}_i,i\geq 2.
+  \bm{U}_i &= \bm{B}_i-\bm{A}_i\bm{U}_{i-1}^{-1}\bm{A}_i,i\geq 2.
 \end{cases}
 \end{equation}
 进一步可以求出
 \begin{equation}\label{eq:thomas_final}
-\bm{e}_{N_a}^T(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}=U_{N_a}^{-1}.
+\bm{e}_{N_a}^{\textrm{T}}(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}=U_{N_a}^{-1}.
 \end{equation}
 关于$U_{N_a}$的结构我们有如下定理:
 \begin{theorem}
@@ -318,7 +318,7 @@ $U_{N_a}$一个特征值是$\lambda$，另一个特征值$T_1$可以用下面的
 T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 \end{split}
 \end{equation}
-其中$\theta_i=\measuredangle (u_i,u_{i+1})$。
+其中$\theta_i=\measuredangle (u_{N_a +1-i},u_{N_a-i})$。
 %Ti should be described by symbol, not natural language.
 \end{theorem}
 具体推导过程详见附录[\ref{B_F_1}]。
@@ -340,7 +340,7 @@ T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 \end{remark}
 \begin{remark}
 
-上述求解是针对目标节点的记时终点而言，记时起点完全类似。如果针对其时间中点，则其可分别看成两段轨迹的起点和终点，
+上述求解是针对目标节点的计时终点而言，计时起点完全类似。如果针对其时间中点，则其可分别看成两段轨迹的起点和终点，
 可以推出其费舍尔信息矩阵为:
 \begin{equation}
 \bm{I}(\bm{p}_i)=\lambda I+M_1\bm{u}\bm{u}^{\textrm{T}} +M_2\bm{v}\bm{v}^{\textrm{T}}.
@@ -348,7 +348,7 @@ T_{N_a-1} & = \lambda+\frac{1}{1+1/\lambda}
 其中$\bm{u}=\frac{\bm{p}_i-\bm{p}_{i-1}}{||\bm{p}_i-\bm{p}_{i-1}||}$,
 $\bm{v}=\frac{\bm{p}_i-\bm{p}_{i+1}}{||\bm{p}_i-\bm{p}_{i+1}||}$,
 $\phi=\measuredangle(\bm{u},\bm{v})$,
-$M_1,M_2$分别作为各段轨迹的记时终点满足递推公式(\ref{eq:recursive_efim}),
+$M_1,M_2$分别作为各段轨迹的计时终点满足递推公式(\ref{eq:recursive_efim}),
 $\bm{I}_p$的两个特征值为可由式(\ref{eq:Lambda})得出：
 \begin{equation}\label{eq:time_interval_case}
 \lambda_{1,2}=\lambda+\frac{M_1+M_2\pm \sqrt{M_1^2+M_2^2+2M_1M_2\cos2\phi}}{2}.
