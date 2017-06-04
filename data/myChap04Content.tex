@@ -420,7 +420,7 @@ M^*:=\lim_{N_a\to \infty}T_1(N_a)=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}.
 
 虽然$\sqrt{\lambda^2+4\lambda}$是一个最大的信息量，但下面的定理指出，较远的时间间隔的位置的贡献实际上是幂指数衰减的，证明见附录[\ref{B_F_2}]。
 \begin{theorem}\label{theorem:exponential_decreasing}
-若相邻时间间隔最大的角度变化量小于$\Delta \theta$，考虑在$t_1$时刻前的$t_0$时刻引入节点位置$\bm{p}_0$与$\bm{p}_1$有协作，这时由式(\ref{eq:recursive_efim})可计算出$T'_1(N_a)$大于原来的$T_1(N_a)$,记增量$\Delta_+ T_1(N_a):=T'_1(N_a)-T_1(N_a)$,$N_a=1$时有$\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时$\Delta_+ T_1(N_a)$满足:
+若相邻时间间隔最大的角度变化量小于$\Delta \theta$($\Delta \theta \leq \frac{\pi}{2}$)，考虑在$t_1$时刻前的$t_0$时刻引入节点位置$\bm{p}_0$与$\bm{p}_1$有协作，这时由式(\ref{eq:recursive_efim})可计算出$T'_1(N_a)$大于原来的$T_1(N_a)$,记增量$\Delta_+ T_1(N_a):=T'_1(N_a)-T_1(N_a)$,$N_a=1$时有$\Delta_{+} T_{1}=\frac{\lambda}{\lambda+1}$,$N_a\geq 2$时$\Delta_+ T_1(N_a)$满足:
 \begin{equation}
 \frac{(\cos\Delta\theta)^{2(N_a-1)}}{(1+1/\lambda)^2(\lambda^2+2\lambda)(2+\lambda)^{2(N_a-2)}}\leq \Delta_+ T_1(N_a)\leq\frac{1}{(\lambda^2+2\lambda)(1+\lambda)^{2(N_a-2)}}.
 \end{equation}
@@ -541,7 +541,7 @@ $T_1(N_a)$可看作终点位置沿信息椭圆长轴的费舍尔信息量，定�
 
   \begin{itemize}
   \item 求解特殊矩阵的全部特征值能给出高维信息椭圆的全部结构，可以全局地分析误差下界，但已知的能解析求解全部特征值的矩阵非常有限，而且求解本身有很强的技巧性，因此该方法局限性比较大。
-  \item 线性网络的费舍尔信息矩阵是块三对角矩阵，块三对角矩阵局部展开后可以得到误差下界的连分式表示法$\ref{eq:U_recursive_formula}$，关于连分式的分析可以相对比较一般，正如 式\ref{eq:recursive_efim_second}所示,我们不需要对线性网络的参数作事先的假定,同时可以通过不等式放缩等技巧对给定的连分式的收敛特性有比较严谨的数学证明。
+  \item 线性网络的费舍尔信息矩阵是块三对角矩阵，块三对角矩阵局部展开后可以得到误差下界的连分式表示法$\ref{eq:U_recursive_formula}$，关于连分式的分析可以相对比较一般，正如 式\ref{eq:recursive_efim_second}所示，我们不需要对线性网络的参数作事先的假定，同时可以通过不等式放缩等技巧对给定的连分式的收敛特性有比较严谨的数学证明。
   \end{itemize}
 
   同时本章最后借助线性网络中的正交性结论，得到了一般矩形网络中链路信息传播特点，同时还求出了大规模正六边形网络的理论定位误差下界。

@@ -1,25 +1,50 @@
-\documentclass[type=bachelor]{thuthesis}
-
-\usepackage{thuthesis}
-\usepackage{bm}
-\newcommand{\transpose}[1]{\ensuremath{#1^{\scriptscriptstyle T}}}
-\DeclareMathOperator*{\rgmax}{argmax}
-\DeclareMathOperator*{\rgmin}{argmin}
-\DeclareMathOperator{\Tr}{Tr}
-\graphicspath{{./figures/}}
+\documentclass{beamer}
+% 此处 type 无所谓
+\usepackage{graphicx}
+%\usepackage{ragged2e}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+%\usepackage{xeCJK}
+%\setCJKmainfont{SimSun}
 \begin{document}
-
-% 如果习惯关键字跟在摘要文字后面，可以用直接命令来设置，如下：
-% \ckeywords{协作定位,费舍尔信息矩阵, 定位误差下界,矩阵代数,连分式}
-
-\begin{align}
-\begin{cases}
-\sum \bm{x}_i^{(k)}&=0,k=1,2\\
-\sum \bm{x}_i \cdot \bm{u}_i&=\sum x_i^{(1)} \cos(\frac{2\pi j}{n})+x_i^{(2)} \sin(\frac{2\pi j}{n})=0
-\label{eq:coupling1}\\
-\sum \bm{x}_i \cdot \mathring{\bm{u}}_i &=\sum -x_i^{(1)} \sin(\frac{2\pi j}{n})+x_i^{(2)} \cos(\frac{2\pi j}{n}) =0
-\end{cases}
-\end{align}
-
-
+%\begin{tabular}{p{7em}@{ }c}
+%\hbox to 7em{姓 名:}&赵丰\\
+%\hbox to 7em{指 导 老 师:}&沈渊\\
+%\hbox to 7em{联合指导老师:}&梁恒
+%\end{tabular}
+%{
+%\cleartabs
+%{\+ \hbox to 7em{姓 名:}& 赵丰 \cr
+%\+ \hbox to 7em{指 导 老 师:} & 沈渊\cr
+%\+ \hbox to 7em{联合指导老师:}  & 梁恒\cr}
+%\tabskip = 1em 
+%\halign{%
+%#\hfil&\hfil#\cr
+%\hbox to 7em{姓 名:}& 赵丰\cr
+%\hbox to 7em{指 导 老 师:} & 沈渊\cr
+%\hbox to 7em{联合指导老师:}  & 梁恒\cr}
+\begin{frame}
+An abstract of a dissertation is a summary and extraction of research work
+   and contributions. 
+\begin{equation*}
+T_1=\lambda+\cfrac{1}{1+\cfrac{\sin^2 \theta_1}{\lambda}+\cfrac{\cos^2\theta_1}{\lambda+\cfrac{1}{1+\cfrac{\sin^2 \theta_2}{\lambda}+\cfrac{\cos^2\theta_2}{\lambda+\boxed{\cfrac{1}{1+\cfrac{1}{\lambda}}}}}}}.
+\end{equation*}
+\vskip -6em
+%\begin{tabular}{lc}
+%$&\\
+%\quad\includegraphics[width=120pt]{figures/cooperative_single_temporal_after.eps}%&\\
+%\vskip -3em
+%\raggedleft{
+%\parbox[c][6em][t]{0.33\textwidth}{abstract of a dissertation is a summary and extraction of research work and contributions}
+%}
+%\parbox{abstract of a dissertation is a summary and extraction of research work and contributions}
+%\end{tabular}
+\end{frame}
+\appendix
+\begin{frame}
+AppendixOne
+\end{frame}
+\begin{frame}
+AppendixTwo
+\end{frame}
 \end{document}
